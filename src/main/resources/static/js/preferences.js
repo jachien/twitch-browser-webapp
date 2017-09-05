@@ -1,6 +1,6 @@
 var gamesKey = 'games';
 
-var defaultGames = [ 'Dota 2', 'PLAYER UNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
+var defaultGames = [ 'Dota 2', 'PLAYERUNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
 
 function readGames() {
     if (!localStorage.getItem(gamesKey)) {
