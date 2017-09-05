@@ -22,13 +22,14 @@
     <script type="text/javascript">
         var streamComponent = {
             props: ['stream'],
-            template: 
-                '<div class="stream_item">' +
-                    '<div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>' +
-                    '<div>{{stream.status}}</div>' +
-                    '<div><strong>{{stream.displayName}}</strong> playing <strong>{{stream.gameName}}</strong></div>' +
-                    '<div>{{stream.numViewers}} viewers</div>' +
-                '</div>'
+            template: `
+                <div class="stream_item">
+                    <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
+                    <div>{{stream.status}}</div>
+                    <div><strong>{{stream.displayName}}</strong> playing <strong>{{stream.gameName}}</strong></div>
+                    <div>{{stream.numViewers}} viewers</div>
+                </div>
+            `
         }
 
 
