@@ -8,10 +8,13 @@ function readGames() {
     }
 
     var str = localStorage.getItem(gamesKey);
-    return JSON.parse(str);
+    var games = JSON.parse(str);
+    games.sort();
+    return games;
 }
 
 function storeGames(games) {
+	games.sort();
     var str = JSON.stringify(games);
     localStorage.setItem(gamesKey, str);
 
