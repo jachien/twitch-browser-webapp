@@ -38,7 +38,12 @@
                             </v-list-tile-content>
                         </v-list-tile> 
                         -->
-                        <game-component v-for="game in games" :key="game" v-bind:game="game" v-bind:game-props="gameProps"></game-component>
+                        <game-component 
+                            v-for="game in games" 
+                            :key="game" 
+                            v-bind:game="game"
+                            v-bind:game-props="gameProps"
+                        ></game-component>
                     </v-list>
                 </v-navigation-drawer>
                 <v-toolbar dark fixed>
@@ -47,7 +52,12 @@
                 </v-toolbar>
                 <main>
                     <v-container fluid>
-                        <stream-component v-for="stream in streams" :key="stream.channelId" v-bind:stream="stream"></stream-component>
+                        <stream-component 
+                            v-for="stream in streams" 
+                            :key="stream.channelId" 
+                            v-bind:stream="stream"
+                            v-bind:game-props="gameProps"
+                        ></stream-component>
 
                         <#-- spacer to avoid fixed footer overlapping content -->
                         <div class="ma-4" />
@@ -62,9 +72,9 @@
 
     <script type="text/javascript">
         var streamComponent = {
-            props: ['stream'],
+            props: ['stream', 'gameProps'],
             template: `
-                <div class="stream_item" v-bind:id="'stream-' + stream.channelId">
+                <div class="stream_item" v-show="gameProps[stream.gameName].display" v-bind:id="'stream-' + stream.channelId">
                     <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
                     <div><strong>{{stream.displayName}}</strong></div>
                     <div>{{stream.status}}</div>
