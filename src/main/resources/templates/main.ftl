@@ -38,17 +38,7 @@
                             </v-list-tile-content>
                         </v-list-tile> 
                         -->
-                        <v-list-tile
-                          v-for="game in games"
-                          :key="game"
-                          @click=""
-                        >
-                          <v-list-tile-content>
-                            <v-list-tile-title>
-                              {{ game }}
-                            </v-list-tile-title>
-                          </v-list-tile-content>
-                        </v-list-tile>
+                        <game-component v-for="game in games" :key="game" v-bind:game="game" v-bind:game-props="gameProps"></game-component>
                     </v-list>
                 </v-navigation-drawer>
                 <v-toolbar dark fixed>
@@ -84,23 +74,51 @@
             `
         }
 
+        var gameComponent = {
+            props: ['game', 'gameProps'],
+            template: `
+                <v-list-tile @click="">
+                    <v-list-tile-action>
+                        <v-checkbox v-model="gameProps[game].display"></v-checkbox>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>
+                            {{ game }}
+                        </v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            `
+        }
+
         var app = new Vue({
             el: '#app',
             data () {
                 return {
                     content: 'Loading streams...',
-                    games: readGames(),
+                    gameProps: readGames(),
                     streams: [],
+                    display: {},
                     drawer: true
                 }
 
             },
+            computed: {
+                games: function() {
+                    let gameNames = [];
+                    for (let gameName in this.gameProps) {
+                        gameNames.push(gameName);
+                    }
+                    gameNames.sort();
+                    return gameNames;
+                }
+            },
             components: {
-                'stream-component': streamComponent
+                'stream-component': streamComponent,
+                'game-component': gameComponent
             },
             methods: {
                 loadAllStreams: function() {
-                    games = readGames()
+                    games = this.games;
                     for (var i=0; i < games.length; i++) {
                         this.loadStreams(games[i], 0, 25);
                     }
@@ -136,7 +154,6 @@
                         return b.numViewers - a.numViewers;
                     });
                     this.streams = mergedStreams;
-
                 }
             },
             created: function() {

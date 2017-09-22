@@ -7,15 +7,24 @@ function readGames() {
         storeGames(defaultGames);
     }
 
-    var str = localStorage.getItem(gamesKey);
-    var games = JSON.parse(str);
+    let str = localStorage.getItem(gamesKey);
+    let games = JSON.parse(str);
     games.sort();
-    return games;
+
+    let ret = {};
+    games.forEach((game) => { 
+    	ret[game] = { display: true }; 
+    });
+    return ret;
 }
 
 function storeGames(games) {
-	games.sort();
-    var str = JSON.stringify(games);
-    localStorage.setItem(gamesKey, str);
+	let gamesArr = [];
+	for (let game in games) {
+		gamesArr.append(game);
+	}
 
+	gamesArr.sort();
+    var str = JSON.stringify(gamesArr);
+    localStorage.setItem(gamesKey, str);
 }
