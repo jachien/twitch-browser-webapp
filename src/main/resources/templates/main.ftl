@@ -18,53 +18,56 @@
 {{ content }}
         </pre> -->
 
-        <v-app id="inspire">
-            <v-app id="example-1" toolbar footer dark>
-            <v-navigation-drawer
-              persistent
-              v-model="drawer"
-              light
-              enable-resize-watcher
-              absolute
-              dark
-            >
-                <v-list dense>
-                    <v-list-tile @click="">
-                        <v-list-tile-action>
-                            <v-icon>home</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Home</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                    <v-list-tile
-                      v-for="game in games"
-                      :key="game"
-                      @click=""
-                    >
-                      <v-list-tile-content>
-                        <v-list-tile-title>
-                          {{ game }}
-                        </v-list-tile-title>
-                      </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-            </v-navigation-drawer>
-            <v-toolbar dark fixed>
-                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                <v-toolbar-title>Toolbar</v-toolbar-title>
-            </v-toolbar>
-            <main>
-                <v-container fluid>
-                <!--v-router-->
-                <stream-component v-for="stream in streams" :key="stream.channelId" v-bind:stream="stream"></stream-component>
-                </v-container>
-            </main>
-            <v-footer dark>
-                <span class="white--text"></span>
-            </v-footer>
-        </v-app>
-        </v-app>
+        
+            <v-app id="browser-app" toolbar footer dark>
+                <v-navigation-drawer
+                  persistent
+                  clipped
+                  v-model="drawer"
+                  enable-resize-watcher
+                  dark
+                >
+                    <v-list dense>
+                        <!-- 
+                        <v-list-tile @click="">
+                            <v-list-tile-action>
+                                <v-icon>home</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Home</v-list-tile-title>
+                            </v-list-tile-content>
+                        </v-list-tile> 
+                        -->
+                        <v-list-tile
+                          v-for="game in games"
+                          :key="game"
+                          @click=""
+                        >
+                          <v-list-tile-content>
+                            <v-list-tile-title>
+                              {{ game }}
+                            </v-list-tile-title>
+                          </v-list-tile-content>
+                        </v-list-tile>
+                    </v-list>
+                </v-navigation-drawer>
+                <v-toolbar dark fixed>
+                     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                    <v-toolbar-title>Twitch Browser</v-toolbar-title>
+                </v-toolbar>
+                <main>
+                    <v-container fluid>
+                        <stream-component v-for="stream in streams" :key="stream.channelId" v-bind:stream="stream"></stream-component>
+
+                        <#-- spacer to avoid fixed footer overlapping content -->
+                        <div class="ma-4" />
+                    </v-container>
+                </main>
+                <v-footer fixed dark>
+                    <span class="white--text"></span>
+                </v-footer>
+            </v-app>
+        
     </div>
 
     <script type="text/javascript">
