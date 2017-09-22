@@ -21,9 +21,12 @@ function readGames() {
 function storeGames(games) {
 	let gamesArr = [];
 	for (let game in games) {
-		gamesArr.append(game);
+		gamesArr.push(game);
 	}
+	storeGamesArray(gamesArr);
+}
 
+function storeGamesArray(gamesArr) {
 	gamesArr.sort();
     var str = JSON.stringify(gamesArr);
     localStorage.setItem(gamesKey, str);
