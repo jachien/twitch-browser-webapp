@@ -88,11 +88,11 @@
         var gameComponent = {
             props: ['game', 'gameProps'],
             template: `
-                <v-list-tile v-bind:title="game" @click="gameProps[game].display = !gameProps[game].display">
+                <v-list-tile @click="">
                     <v-list-tile-action>
                         <v-switch dark v-model="gameProps[game].display"></v-switch>
                     </v-list-tile-action>
-                    <v-list-tile-content>
+                    <v-list-tile-content v-bind:title="game" @click="gameProps[game].display = !gameProps[game].display">
                         <v-list-tile-title>
                             {{ game }}
                         </v-list-tile-title>
