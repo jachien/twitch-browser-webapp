@@ -28,7 +28,7 @@
                   dark
                 >
                     <v-list dense>
-                        <v-list-tile @click="showAllStreams()">
+                        <v-list-tile avatar @click="showAllStreams()">
                             <v-list-tile-avatar>
                                 <v-icon>remove_red_eye</v-icon>
                             </v-list-tile-avatar>
