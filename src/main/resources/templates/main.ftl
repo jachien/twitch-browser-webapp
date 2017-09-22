@@ -28,16 +28,17 @@
                   dark
                 >
                     <v-list dense>
-                        <!-- 
-                        <v-list-tile @click="">
-                            <v-list-tile-action>
-                                <v-icon>home</v-icon>
-                            </v-list-tile-action>
+                        <v-list-tile @click="showAllStreams()">
+                            <v-list-tile-avatar>
+                                <v-icon>remove_red_eye</v-icon>
+                            </v-list-tile-avatar>
                             <v-list-tile-content>
-                                <v-list-tile-title>Home</v-list-tile-title>
+                                Show all streams
                             </v-list-tile-content>
-                        </v-list-tile> 
-                        -->
+                        </v-list-tile>
+
+                        <v-divider></v-divider>
+
                         <game-component 
                             v-for="game in games" 
                             :key="game" 
@@ -89,7 +90,7 @@
             template: `
                 <v-list-tile @click="">
                     <v-list-tile-action>
-                        <v-checkbox v-model="gameProps[game].display"></v-checkbox>
+                        <v-switch dark v-model="gameProps[game].display"></v-switch>
                     </v-list-tile-action>
                     <v-list-tile-content>
                         <v-list-tile-title>
@@ -164,6 +165,11 @@
                         return b.numViewers - a.numViewers;
                     });
                     this.streams = mergedStreams;
+                },
+                showAllStreams: function() {
+                    this.games.forEach((game) => {
+                        this.gameProps[game].display = true;
+                    })
                 }
             },
             created: function() {
