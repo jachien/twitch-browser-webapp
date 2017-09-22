@@ -76,8 +76,9 @@
             template: `
                 <div class="stream_item" v-bind:id="'stream-' + stream.channelId">
                     <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
+                    <div><strong>{{stream.displayName}}</strong></div>
                     <div>{{stream.status}}</div>
-                    <div><strong>{{stream.displayName}}</strong> playing <strong>{{stream.gameName}}</strong></div>
+                    <div><strong>{{stream.gameName}}</strong></div>
                     <div>{{stream.numViewers}} viewers</div>
                 </div>
             `
