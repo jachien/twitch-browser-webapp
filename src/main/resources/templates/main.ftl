@@ -38,13 +38,40 @@
                         </v-list-tile>
 
                         <v-divider></v-divider>
+                        
+                        <v-list-group v-for="game in games"
+                            :key="game"
+                            v-bind:game-props="gameProps"
+                        >
+                            <v-list-tile slot="item" @click="">
+                                <v-list-tile-action>
+                                    <v-switch dark v-model="gameProps[game].display"></v-switch>
+                                </v-list-tile-action>
+                                <v-list-tile-content v-bind:title="game">
+                                    <v-list-tile-title>
+                                        {{ game }}
+                                    </v-list-tile-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                    <v-icon>keyboard_arrow_down</v-icon>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                            <v-list-tile>
+                                <v-list-tile-content>
+                                    <v-list-tile-title>Remove</v-list-tile-title>
+                                </v-list-tile-content>
+                                <v-list-tile-action>
+                                    <v-icon>clear</v-icon>
+                                </v-list-tile-action>
+                            </v-list-tile>
+                        </v-list-group> 
 
-                        <game-component 
+                        <!-- <game-component 
                             v-for="game in games" 
                             :key="game" 
                             v-bind:game="game"
                             v-bind:game-props="gameProps"
-                        ></game-component>
+                        ></game-component> -->
                     </v-list>
                 </v-navigation-drawer>
                 <v-toolbar dark fixed>
@@ -88,16 +115,29 @@
         var gameComponent = {
             props: ['game', 'gameProps'],
             template: `
-                <v-list-tile @click="">
-                    <v-list-tile-action>
-                        <v-switch dark v-model="gameProps[game].display"></v-switch>
-                    </v-list-tile-action>
-                    <v-list-tile-content v-bind:title="game" @click="gameProps[game].display = !gameProps[game].display">
-                        <v-list-tile-title>
-                            {{ game }}
-                        </v-list-tile-title>
-                    </v-list-tile-content>
-                </v-list-tile>
+                <v-list-group>
+                    <v-list-tile slot="item" @click="">
+                        <v-list-tile-action>
+                            <v-switch dark v-model="gameProps[game].display"></v-switch>
+                        </v-list-tile-action>
+                        <v-list-tile-content v-bind:title="game">
+                            <v-list-tile-title>
+                                {{ game }}
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-icon>keyboard_arrow_down</v-icon>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                    <v-list-tile>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Remove</v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-icon>clear</v-icon>
+                        </v-list-tile-action>
+                    </v-list-tile>
+                </v-list-group> 
             `
         }
 
