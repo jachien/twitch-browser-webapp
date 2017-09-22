@@ -38,7 +38,10 @@
                         </v-list-tile>
 
                         <v-divider></v-divider>
+
+                        <v-subheader>Games</v-subheader>
                         
+                        <#-- games list -->
                         <v-list-group v-for="game in games"
                             :key="game"
                             v-bind:game-props="gameProps"
@@ -56,7 +59,7 @@
                                     <v-icon>keyboard_arrow_down</v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
-                            <v-list-tile>
+                            <v-list-tile @click="removeGame(game)">
                                 <v-list-tile-content>
                                     <v-list-tile-title>Remove</v-list-tile-title>
                                 </v-list-tile-content>
@@ -64,14 +67,7 @@
                                     <v-icon>clear</v-icon>
                                 </v-list-tile-action>
                             </v-list-tile>
-                        </v-list-group> 
-
-                        <!-- <game-component 
-                            v-for="game in games" 
-                            :key="game" 
-                            v-bind:game="game"
-                            v-bind:game-props="gameProps"
-                        ></game-component> -->
+                        </v-list-group>
                     </v-list>
                 </v-navigation-drawer>
                 <v-toolbar dark fixed>
@@ -112,35 +108,6 @@
             `
         }
 
-        var gameComponent = {
-            props: ['game', 'gameProps'],
-            template: `
-                <v-list-group>
-                    <v-list-tile slot="item" @click="">
-                        <v-list-tile-action>
-                            <v-switch dark v-model="gameProps[game].display"></v-switch>
-                        </v-list-tile-action>
-                        <v-list-tile-content v-bind:title="game">
-                            <v-list-tile-title>
-                                {{ game }}
-                            </v-list-tile-title>
-                        </v-list-tile-content>
-                        <v-list-tile-action>
-                            <v-icon>keyboard_arrow_down</v-icon>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                    <v-list-tile>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Remove</v-list-tile-title>
-                        </v-list-tile-content>
-                        <v-list-tile-action>
-                            <v-icon>clear</v-icon>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                </v-list-group> 
-            `
-        }
-
         var app = new Vue({
             el: '#app',
             data () {
@@ -165,7 +132,6 @@
             },
             components: {
                 'stream-component': streamComponent,
-                'game-component': gameComponent
             },
             methods: {
                 loadAllStreams: function() {
@@ -210,7 +176,12 @@
                     this.games.forEach((game) => {
                         this.gameProps[game].display = true;
                     })
+                },
+                removeGame: function(game) {
+                    delete this.gameProps[game];
+                    storeGamesArray(games);
                 }
+
             },
             created: function() {
                 this.loadAllStreams();
