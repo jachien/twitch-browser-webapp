@@ -1,33 +1,48 @@
-var gamesKey = 'games';
+var prefsKey = 'prefs';
 
 var defaultGames = [ 'Dota 2', 'PLAYERUNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
 
-function readGames() {
-    if (!localStorage.getItem(gamesKey)) {
-        storeGames(defaultGames);
+function createPrefs(games) {
+	// make sure games is sorted, but don't modify the arg
+	games = games.slice().sort();
+
+	let prefs = {
+		gameProps: []
+	};
+
+	games.forEach((game) => {
+		let prop = {
+			name: game,
+			display: true
+		}
+		prefs.gameProps.push(prop);
+	})
+
+	return prefs;
+}
+
+function readPrefs() {
+    if (!localStorage.getItem(prefsKey)) {
+        let prefs = createPrefs(defaultGames);
+        storePrefs(prefs);
     }
 
-    let str = localStorage.getItem(gamesKey);
-    let games = JSON.parse(str);
-    games.sort();
+    let prefsJson = localStorage.getItem(prefsKey);
+    let prefs = JSON.parse(prefsJson);
+    
+    sortGameProps(prefs);
 
-    let ret = {};
-    games.forEach((game) => { 
-    	ret[game] = { display: true }; 
-    });
-    return ret;
+    return prefs;
 }
 
-function storeGames(games) {
-	let gamesArr = [];
-	for (let game in games) {
-		gamesArr.push(game);
-	}
-	storeGamesArray(gamesArr);
+function storePrefs(prefs) {
+	sortGameProps(prefs);
+	let prefsJson = JSON.stringify(prefs);
+	localStorage.setItem(prefsKey, prefsJson);
 }
 
-function storeGamesArray(gamesArr) {
-	gamesArr.sort();
-    var str = JSON.stringify(gamesArr);
-    localStorage.setItem(gamesKey, str);
+function sortGameProps(prefs) {
+	prefs.gameProps.sort((a, b) => {
+    	return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase);
+    })
 }

@@ -47,24 +47,24 @@
                     <v-subheader>Games</v-subheader>
                     
                     <#-- games list -->
-                    <v-list-group v-for="game in games"
-                        :key="game"
-                        v-bind:game-props="gameProps"
+                    <v-list-group v-for="game in prefs.gameProps"
+                        :key="game.name"
+                        v-bind:prefs="prefs"
                     >
                         <v-list-tile slot="item" @click="">
                             <v-list-tile-action>
-                                <v-switch dark v-model="gameProps[game].display"></v-switch>
+                                <v-switch dark v-model="prefs.gameProps[gameIdxs[game.name]].display"></v-switch>
                             </v-list-tile-action>
-                            <v-list-tile-content v-bind:title="game">
+                            <v-list-tile-content v-bind:title="game.name">
                                 <v-list-tile-title>
-                                    {{ game }}
+                                    {{ game.name }}
                                 </v-list-tile-title>
                             </v-list-tile-content>
                             <v-list-tile-action>
                                 <v-icon>keyboard_arrow_down</v-icon>
                             </v-list-tile-action>
                         </v-list-tile>
-                        <v-list-tile @click="removeGame(game)">
+                        <v-list-tile @click="removeGame(game.name)">
                             <v-list-tile-content>
                                 <v-list-tile-title>Remove</v-list-tile-title>
                             </v-list-tile-content>
@@ -85,7 +85,8 @@
                         v-for="stream in streams" 
                         :key="stream.channelId" 
                         v-bind:stream="stream"
-                        v-bind:game-props="gameProps"
+                        v-bind:prefs="prefs"
+                        v-bind:game-idxs="gameIdxs"
                     ></stream-component>
 
                     <#-- spacer to avoid fixed footer overlapping content -->
@@ -100,9 +101,9 @@
 
     <script type="text/javascript">
         var streamComponent = {
-            props: ['stream', 'gameProps'],
+            props: ['stream', 'prefs', 'gameIdxs'],
             template: `
-                <div class="stream_item" v-show="gameProps[stream.gameName].display" v-bind:id="'stream-' + stream.channelId">
+                <div class="stream_item" v-show="gameIdxs.hasOwnProperty(stream.gameName) && prefs.gameProps[gameIdxs[stream.gameName]].display" v-bind:id="'stream-' + stream.channelId">
                     <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
                     <div><strong>{{stream.displayName}}</strong></div>
                     <div>{{stream.status}}</div>
@@ -116,22 +117,23 @@
             el: '#app',
             data () {
                 return {
-                    content: 'Loading streams...',
-                    gameProps: readGames(),
+                    prefs: readPrefs(),
                     streams: [],
-                    display: {},
                     drawer: true
                 }
 
             },
             computed: {
-                games: function() {
-                    let gameNames = [];
-                    for (let gameName in this.gameProps) {
-                        gameNames.push(gameName);
-                    }
-                    gameNames.sort();
-                    return gameNames;
+                gameIdxs: function() {
+                    console.log(this.prefs.gameProps);
+                    let gameIdxs = {}
+                    let idx = 0;
+                    this.prefs.gameProps.forEach((game) => {
+                        gameIdxs[game.name] = idx;
+                        idx++;
+                    });
+                    console.log(gameIdxs);
+                    return gameIdxs;
                 }
             },
             components: {
@@ -139,10 +141,9 @@
             },
             methods: {
                 loadAllStreams: function() {
-                    games = this.games;
-                    for (var i=0; i < games.length; i++) {
-                        this.loadStreams(games[i], 0, 25);
-                    }
+                    this.prefs.gameProps.forEach((game) => {
+                        this.loadStreams(game.name, 0, 25);
+                    });
                 },
                 loadStreams: function(game, start, limit) {
                     console.log(game + " " + start + " " + limit)
@@ -154,11 +155,11 @@
                         }
                     };
                     
-                    console.log(config);
+                    //console.log(config);
                     axios.get('/api', config)
                         .then(
                             function (response) {
-                                console.log(response);
+                                //console.log(response);
                                 //app.content = response;
                                 this.appendStreams(response.data.streams);
                                 
@@ -170,20 +171,21 @@
                         );
                 },
                 appendStreams: function(newStreams) {
-                    var mergedStreams = this.streams.concat(newStreams);
+                    let mergedStreams = this.streams.concat(newStreams);
                     mergedStreams.sort(function(a, b) {
                         return b.numViewers - a.numViewers;
                     });
                     this.streams = mergedStreams;
                 },
                 showAllStreams: function() {
-                    this.games.forEach((game) => {
-                        this.gameProps[game].display = true;
+                    this.prefs.gameProps.forEach((game) => {
+                        game.display = true;
                     })
                 },
                 removeGame: function(game) {
-                    delete this.gameProps[game];
-                    storeGamesArray(games);
+                    let idx = this.gameIdxs[game];
+                    this.prefs.gameProps.splice(idx, 1);
+                    storePrefs(this.prefs);
                 }
 
             },
