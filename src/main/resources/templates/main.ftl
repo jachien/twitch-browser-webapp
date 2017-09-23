@@ -47,32 +47,48 @@
                     <v-subheader>Games</v-subheader>
                     
                     <#-- games list -->
-                    <v-list-group v-for="game in prefs.gameProps"
+                    <v-list-tile
+                        v-for="game in prefs.gameProps"
                         :key="game.name"
-                        v-bind:prefs="prefs"
+                        v-bind:prefs="prefs" 
+                        @click=""
                     >
-                        <v-list-tile slot="item" @click="">
-                            <v-list-tile-action>
-                                <v-switch dark v-model="prefs.gameProps[gameIdxs[game.name]].display"></v-switch>
-                            </v-list-tile-action>
-                            <v-list-tile-content v-bind:title="game.name">
-                                <v-list-tile-title>
-                                    {{ game.name }}
-                                </v-list-tile-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-icon>keyboard_arrow_down</v-icon>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                        <v-list-tile @click="removeGame(game.name)">
-                            <v-list-tile-content>
-                                <v-list-tile-title>Remove</v-list-tile-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-icon>clear</v-icon>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                    </v-list-group>
+                        <v-list-tile-action>
+                            <v-switch dark v-model="prefs.gameProps[gameIdxs[game.name]].display"></v-switch>
+                        </v-list-tile-action>
+                        <v-list-tile-content v-bind:title="game.name">
+                            <v-list-tile-title>
+                                {{ game.name }}
+                            </v-list-tile-title>
+                        </v-list-tile-content>
+                        <v-list-tile-action>
+                            <v-menu 
+                                offset-y
+                                :close-on-content-click="false"
+                                v-model="prefs.gameProps[gameIdxs[game.name]].menu"
+                            >
+                                <v-btn icon slot="activator">
+                                    <v-icon>keyboard_arrow_down</v-icon>
+                                </v-btn>
+                                <v-card dark>
+                                    <v-list>
+                                        <v-list-tile avatar>
+                                            <v-list-tile-avatar>
+                                                <v-icon>gamepad</v-icon>
+                                            </v-list-tile-avatar>
+                                            <v-list-tile-content>
+                                                <v-list-tile-title class="title">{{ game.name }}</v-list-tile-title>
+                                            </v-list-tile-content>
+                                        </v-list-tile>
+                                    </v-list>
+                                    <v-card-actions>
+                                        <v-btn primary dark flat small @click="showOnlyStreams(game.name); prefs.gameProps[gameIdxs[game.name]].menu=false">Show only this game</v-btn>
+                                        <v-btn error dark flat small @click="removeGame(game.name); prefs.gameProps[gameIdxs[game.name]].menu=false">Remove game</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-menu>
+                        </v-list-tile-action>
+                    </v-list-tile>
                 </v-list>
             </v-navigation-drawer>
             <v-toolbar dark fixed>
@@ -180,6 +196,15 @@
                 showAllStreams: function() {
                     this.prefs.gameProps.forEach((game) => {
                         game.display = true;
+                    })
+                },
+                showOnlyStreams: function(gameName) {
+                    this.prefs.gameProps.forEach((game) => {
+                        if (game.name == gameName) {
+                            game.display = true;
+                        } else {
+                            game.display = false;
+                        }
                     })
                 },
                 removeGame: function(game) {

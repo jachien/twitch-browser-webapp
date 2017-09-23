@@ -13,7 +13,8 @@ function createPrefs(games) {
 	games.forEach((game) => {
 		let prop = {
 			name: game,
-			display: true
+			display: true,
+			menu: false
 		}
 		prefs.gameProps.push(prop);
 	})
