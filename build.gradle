@@ -43,7 +43,7 @@ repositories {
 // updating the version in our release process.
 def grpcVersion = '1.4.0' // CURRENT_GRPC_VERSION
 def log4j2Version = '2.8.2'
-def springVersion = '1.5.6.RELEASE'
+def springVersion = '1.5.7.RELEASE'
 
 dependencies {
     // The production code uses the SLF4J logging API at compile time
@@ -63,7 +63,7 @@ dependencies {
         [group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: "${springVersion}"],
         [group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springVersion}"],
         [group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "${springVersion}"],
-        [group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: "${springVersion}"]
+        [group: 'org.springframework.boot', name: 'spring-boot-starter-freemarker', version: "${springVersion}"],
     ].each { dep ->
         compile(dep) {
             exclude module: "spring-boot-starter-logging"

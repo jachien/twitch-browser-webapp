@@ -173,7 +173,7 @@
                     axios.get('/api', config)
                         .then(
                             function (response) {
-                                //console.log(response);
+                                console.log(response);
                                 //app.content = response;
                                 this.appendStreams(response.data.streams);
                                 

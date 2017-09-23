@@ -2,7 +2,9 @@ package org.jchien.twitchbrowser;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -12,6 +14,8 @@ import java.util.Arrays;
  * @author jchien
  */
 @SpringBootApplication
+@EnableAutoConfiguration
+@EnableConfigurationProperties
 public class TwitchBrowserWebapp {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(TwitchBrowserWebapp.class, args);
@@ -30,5 +34,4 @@ public class TwitchBrowserWebapp {
 
         };
     }
-
 }
