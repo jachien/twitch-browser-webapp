@@ -141,14 +141,12 @@
             },
             computed: {
                 gameIdxs: function() {
-                    console.log(this.prefs.gameProps);
                     let gameIdxs = {}
                     let idx = 0;
                     this.prefs.gameProps.forEach((game) => {
                         gameIdxs[game.name] = idx;
                         idx++;
                     });
-                    console.log(gameIdxs);
                     return gameIdxs;
                 }
             },
