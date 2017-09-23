@@ -11,87 +11,91 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/js/preferences.js"></script>
     <script src="/js/main.js"></script>
+
+    <#-- 
+        hide content before vue renders it 
+        http://vuetips.com/v-cloak-directive-hides-html-on-startup
+    -->
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div id="app">
-        <!-- <pre>
-{{ content }}
-        </pre> -->
+    <div id="app" v-cloak>
+        <v-app id="browser-app" toolbar footer dark>
+            <v-navigation-drawer
+              persistent
+              clipped
+              v-model="drawer"
+              enable-resize-watcher
+              dark
+            >
+                <v-list dense>
+                    <v-list-tile avatar @click="showAllStreams()">
+                        <v-list-tile-avatar>
+                            <v-icon>remove_red_eye</v-icon>
+                        </v-list-tile-avatar>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Show all streams</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
 
-        
-            <v-app id="browser-app" toolbar footer dark>
-                <v-navigation-drawer
-                  persistent
-                  clipped
-                  v-model="drawer"
-                  enable-resize-watcher
-                  dark
-                >
-                    <v-list dense>
-                        <v-list-tile avatar @click="showAllStreams()">
-                            <v-list-tile-avatar>
-                                <v-icon>remove_red_eye</v-icon>
-                            </v-list-tile-avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>Show all streams</v-list-tile-title>
+                    <v-divider></v-divider>
+
+                    <v-subheader>Games</v-subheader>
+                    
+                    <#-- games list -->
+                    <v-list-group v-for="game in games"
+                        :key="game"
+                        v-bind:game-props="gameProps"
+                    >
+                        <v-list-tile slot="item" @click="">
+                            <v-list-tile-action>
+                                <v-switch dark v-model="gameProps[game].display"></v-switch>
+                            </v-list-tile-action>
+                            <v-list-tile-content v-bind:title="game">
+                                <v-list-tile-title>
+                                    {{ game }}
+                                </v-list-tile-title>
                             </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-icon>keyboard_arrow_down</v-icon>
+                            </v-list-tile-action>
                         </v-list-tile>
+                        <v-list-tile @click="removeGame(game)">
+                            <v-list-tile-content>
+                                <v-list-tile-title>Remove</v-list-tile-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-icon>clear</v-icon>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list-group>
+                </v-list>
+            </v-navigation-drawer>
+            <v-toolbar dark fixed>
+                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                <v-toolbar-title>Twitch Browser</v-toolbar-title>
+            </v-toolbar>
+            <main>
+                <v-container fluid>
+                    <stream-component 
+                        v-for="stream in streams" 
+                        :key="stream.channelId" 
+                        v-bind:stream="stream"
+                        v-bind:game-props="gameProps"
+                    ></stream-component>
 
-                        <v-divider></v-divider>
-
-                        <v-subheader>Games</v-subheader>
-                        
-                        <#-- games list -->
-                        <v-list-group v-for="game in games"
-                            :key="game"
-                            v-bind:game-props="gameProps"
-                        >
-                            <v-list-tile slot="item" @click="">
-                                <v-list-tile-action>
-                                    <v-switch dark v-model="gameProps[game].display"></v-switch>
-                                </v-list-tile-action>
-                                <v-list-tile-content v-bind:title="game">
-                                    <v-list-tile-title>
-                                        {{ game }}
-                                    </v-list-tile-title>
-                                </v-list-tile-content>
-                                <v-list-tile-action>
-                                    <v-icon>keyboard_arrow_down</v-icon>
-                                </v-list-tile-action>
-                            </v-list-tile>
-                            <v-list-tile @click="removeGame(game)">
-                                <v-list-tile-content>
-                                    <v-list-tile-title>Remove</v-list-tile-title>
-                                </v-list-tile-content>
-                                <v-list-tile-action>
-                                    <v-icon>clear</v-icon>
-                                </v-list-tile-action>
-                            </v-list-tile>
-                        </v-list-group>
-                    </v-list>
-                </v-navigation-drawer>
-                <v-toolbar dark fixed>
-                     <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                    <v-toolbar-title>Twitch Browser</v-toolbar-title>
-                </v-toolbar>
-                <main>
-                    <v-container fluid>
-                        <stream-component 
-                            v-for="stream in streams" 
-                            :key="stream.channelId" 
-                            v-bind:stream="stream"
-                            v-bind:game-props="gameProps"
-                        ></stream-component>
-
-                        <#-- spacer to avoid fixed footer overlapping content -->
-                        <div class="ma-4" />
-                    </v-container>
-                </main>
-                <v-footer fixed dark>
-                    <span class="white--text"></span>
-                </v-footer>
-            </v-app>
-        
+                    <#-- spacer to avoid fixed footer overlapping content -->
+                    <div class="ma-4" />
+                </v-container>
+            </main>
+            <v-footer fixed dark>
+                <span class="white--text"></span>
+            </v-footer>
+        </v-app>
     </div>
 
     <script type="text/javascript">
