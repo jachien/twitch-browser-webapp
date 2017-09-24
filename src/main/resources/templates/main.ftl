@@ -92,8 +92,21 @@
                 </v-list>
             </v-navigation-drawer>
             <v-toolbar dark fixed>
-                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                 <v-toolbar-title>Twitch Browser</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn primary dark @click="addGame()">Add game</v-btn>
+                <v-select
+                    label="Find games"
+                    autocomplete
+                    :async-loading="agLoading"
+                    dark
+                    cache-items
+                    :items="agItems"
+                    :search-input.sync="agSearch"
+                    :no-data-text="`No matching games available`"
+                    v-model="agSelect"
+                ></v-select>
             </v-toolbar>
             <main>
                 <v-container fluid>
@@ -135,6 +148,10 @@
                 return {
                     prefs: readPrefs(),
                     streams: [],
+                    agSelect: "",
+                    agItems: [],
+                    agSearch: null,
+                    agLoading: false,
                     drawer: true
                 }
 
@@ -148,6 +165,13 @@
                         idx++;
                     });
                     return gameIdxs;
+                }
+            },
+            watch: {
+                agSearch: function(val) {
+                    if (val) {
+                        this.queryGames(val);
+                    }
                 }
             },
             components: {
@@ -205,10 +229,63 @@
                         }
                     })
                 },
+                addGame: function() {
+                    if (this.agSelect != "" && !this.gameIdxs.hasOwnProperty(this.agSelect)) {
+                        this.agItems.some((game) => {
+                            if (this.agSelect == game) {
+                                let prop = createGameProp(game);
+                                this.prefs.gameProps.push(prop);
+                                storePrefs(this.prefs);
+                                this.loadStreams(game, 0, 25);
+                                return true;
+                            }
+                            return false;
+                        })
+                    }
+                },
                 removeGame: function(game) {
                     let idx = this.gameIdxs[game];
                     this.prefs.gameProps.splice(idx, 1);
                     storePrefs(this.prefs);
+                },
+                queryGames: function(gameName) {
+                    this.agLoading = true;
+
+                    config = {
+                        params: {
+                            query: gameName,
+                            // todo extract this to config
+                            client_id: "ib5vu55l2rc4elcwyrqikyza4hio0y",
+                            api_version: "5"
+                        }
+                    };
+
+                    //console.log(config);
+                    axios.get('https://api.twitch.tv/kraken/search/games', config)
+                        .then(
+                            function (response) {
+                                console.log(response);
+
+                                let games = response.data.games;
+                                games.sort(function(a, b) {
+                                    return b.popularity - a.popularity;
+                                });
+
+                                let items = [];
+                                games.forEach((game) => {
+                                    items.push(game.name);
+                                });
+
+                                this.agItems = items;
+
+                            }.bind(this)
+                        ).catch(
+                            function (error) {
+                                console.log(error);
+                            }
+                        );
+
+                    this.agLoading = false;
                 }
 
             },
