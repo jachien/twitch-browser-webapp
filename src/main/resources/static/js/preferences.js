@@ -11,15 +11,19 @@ function createPrefs(games) {
 	};
 
 	games.forEach((game) => {
-		let prop = {
-			name: game,
-			display: true,
-			menu: false
-		}
+		let prop = createGameProp(game);
 		prefs.gameProps.push(prop);
 	})
 
 	return prefs;
+}
+
+function createGameProp(game) {
+	return {
+		name: game,
+		display: true,
+		menu: false
+	}
 }
 
 function readPrefs() {
@@ -44,6 +48,6 @@ function storePrefs(prefs) {
 
 function sortGameProps(prefs) {
 	prefs.gameProps.sort((a, b) => {
-    	return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase);
-    })
+		return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
+	});
 }
