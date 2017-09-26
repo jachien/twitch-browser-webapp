@@ -68,6 +68,7 @@ var app = new Vue({
         return {
             prefs: readPrefs(),
             streams: [],
+            streamsLoaded: {},
             agSelect: "",
             agItems: [],
             agSearch: null,
@@ -91,7 +92,6 @@ var app = new Vue({
         prefs: {
             handler(prefs, oldPrefs) {
                 storePrefs(this.prefs);
-                // todo load streams if necessary
             },
             deep: true
         },
@@ -112,6 +112,10 @@ var app = new Vue({
             });
         },
         loadStreams: function(game, start, limit) {
+            if (this.streamsLoaded[game]) {
+                return;
+            }
+
             console.log(game + " " + start + " " + limit)
 
             config = {
@@ -130,6 +134,8 @@ var app = new Vue({
                         if (response.data && response.data.streams) {
                             this.appendStreams(response.data.streams);
                         }
+
+                        this.streamsLoaded[game] = true;
                     }.bind(this)
                 ).catch(
                     function (error) {
@@ -161,7 +167,7 @@ var app = new Vue({
             })
         },
         addGame: function() {
-            if (this.agSelect != "" && !this.gameIdxs.hasOwnProperty(this.agSelect)) {
+            if (this.agSelect && !this.gameIdxs.hasOwnProperty(this.agSelect)) {
                 this.agItems.some((game) => {
                     if (this.agSelect == game) {
                         let prop = createGameProp(game);
