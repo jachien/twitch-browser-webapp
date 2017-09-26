@@ -48,7 +48,7 @@
                     <#-- games list -->
                     <game-component
                         v-for="game in prefs.gameProps"
-                        :key="game.name"
+                        :key="game.name + '-' + game.createTime"
                         :game-prop="prefs.gameProps[gameIdxs[game.name]]"
                         v-on:show-only-streams="showOnlyStreams(game.name)"
                         v-on:remove-game="removeGame(game.name)"
