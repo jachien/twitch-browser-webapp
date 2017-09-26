@@ -11,6 +11,57 @@ var streamComponent = {
     `
 };
 
+var gameComponent = {
+    props: ['gameProp'],
+    template: `
+        <v-list-tile @click="">
+            <v-list-tile-action>
+                <v-switch dark v-model="gameProp.display"></v-switch>
+            </v-list-tile-action>
+            <v-list-tile-content v-bind:title="gameProp.name">
+                <v-list-tile-title>
+                    {{ gameProp.name }}
+                </v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+                <v-menu
+                    offset-y
+                    :close-on-content-click="false"
+                    v-model="gameProp.menu"
+                >
+                    <v-btn icon slot="activator">
+                        <v-icon>keyboard_arrow_down</v-icon>
+                    </v-btn>
+                    <v-card dark>
+                        <v-list>
+                            <v-list-tile avatar>
+                                <v-list-tile-avatar>
+                                    <v-icon>gamepad</v-icon>
+                                </v-list-tile-avatar>
+                                <v-list-tile-content>
+                                    <v-list-tile-title class="title">{{ gameProp.name }}</v-list-tile-title>
+                                </v-list-tile-content>
+                            </v-list-tile>
+                        </v-list>
+                        <v-card-actions>
+                            <v-btn primary dark flat small v-on:click="showOnlyStreams">Show only this game</v-btn>
+                            <v-btn error dark flat small v-on:click="removeGame">Remove game</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-menu>
+            </v-list-tile-action>
+        </v-list-tile>
+    `,
+    methods: {
+        showOnlyStreams: function() {
+            this.$emit('show-only-streams');
+        },
+        removeGame: function() {
+            this.$emit('remove-game');
+        }
+    }
+}
+
 var app = new Vue({
     el: '#app',
     data () {
@@ -50,6 +101,7 @@ var app = new Vue({
     },
     components: {
         'stream-component': streamComponent,
+        'game-component': gameComponent,
     },
     methods: {
         loadAllStreams: function() {
@@ -94,6 +146,8 @@ var app = new Vue({
             })
         },
         showOnlyStreams: function(gameName) {
+            this.closeMenu(game);
+
             this.prefs.gameProps.forEach((game) => {
                 if (game.name == gameName) {
                     game.display = true;
@@ -116,6 +170,8 @@ var app = new Vue({
             }
         },
         removeGame: function(game) {
+            this.closeMenu(game);
+
             let idx = this.gameIdxs[game];
             this.prefs.gameProps.splice(idx, 1);
         },
@@ -157,8 +213,11 @@ var app = new Vue({
                 );
 
             this.agLoading = false;
+        },
+        closeMenu: function(game) {
+            let idx = this.gameIdxs[game];
+            this.prefs.gameProps[idx].menu = false;
         }
-
     },
     created: function() {
         this.loadAllStreams();
