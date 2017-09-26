@@ -113,6 +113,7 @@ var app = new Vue({
         },
         loadStreams: function(game, start, limit) {
             console.log(game + " " + start + " " + limit)
+
             config = {
                 params: {
                     game: game,
@@ -121,13 +122,14 @@ var app = new Vue({
                 }
             };
 
-            //console.log(config);
             axios.get('/api', config)
                 .then(
                     function (response) {
                         console.log(response);
-                        //app.content = response;
-                        this.appendStreams(response.data.streams);
+
+                        if (response.data && response.data.streams) {
+                            this.appendStreams(response.data.streams);
+                        }
                     }.bind(this)
                 ).catch(
                     function (error) {
@@ -194,6 +196,10 @@ var app = new Vue({
                 .then(
                     function (response) {
                         console.log(response);
+
+                        if (!response.data || !response.data.games) {
+                            return;
+                        }
 
                         let games = response.data.games;
                         games.sort(function(a, b) {
