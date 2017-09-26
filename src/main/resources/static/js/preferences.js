@@ -49,8 +49,20 @@ function storePrefs(prefs) {
 	localStorage.setItem(prefsKey, prefsJson);
 }
 
+function compareGameName(a, b) {
+	return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
+}
+
 function sortGameProps(prefs) {
-	prefs.gameProps.sort((a, b) => {
-		return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
-	});
+	let sorted = true;
+	for (let i=1; i < prefs.gameProps.length; i++) {
+		if (compareGameName(prefs.gameProps[i-1], prefs.gameProps[i]) > 0) {
+			sorted = false;
+			break;
+		}
+	}
+
+	if (!sorted) {
+		prefs.gameProps.sort(compareGameName);
+	}
 }

@@ -88,10 +88,12 @@ var app = new Vue({
         }
     },
     watch: {
-        prefs: function(prefs) {
-            console.log("updating prefs");
-            storePrefs(prefs);
-            // todo load streams if necessary
+        prefs: {
+            handler(prefs, oldPrefs) {
+                storePrefs(this.prefs);
+                // todo load streams if necessary
+            },
+            deep: true
         },
         agSearch: function(val) {
             if (val) {
