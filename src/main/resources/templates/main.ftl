@@ -62,11 +62,12 @@
                 <v-spacer></v-spacer>
                 <v-btn primary dark @click="addGame()">Add game</v-btn>
                 <v-select
+                    placeholder="Find game"
                     autocomplete
                     :async-loading="agLoading"
                     dark
+                    clearable
                     cache-items
-                    append-icon="search"
                     :items="agItems"
                     :search-input.sync="agSearch"
                     :no-data-text="`No matching games available`"
