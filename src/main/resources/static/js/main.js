@@ -97,9 +97,7 @@ var app = new Vue({
             deep: true
         },
         agSearch: function(val) {
-            if (val) {
-                this.queryGames(val);
-            }
+            this.queryGames(val);
         }
     },
     components: {
@@ -188,6 +186,11 @@ var app = new Vue({
             this.prefs.gameProps.splice(idx, 1);
         },
         queryGames: function(gameName) {
+            if (!gameName) {
+                this.agItems = [];
+                return;
+            }
+
             this.agLoading = true;
 
             config = {

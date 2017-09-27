@@ -67,7 +67,6 @@
                     :async-loading="agLoading"
                     dark
                     clearable
-                    cache-items
                     :items="agItems"
                     :search-input.sync="agSearch"
                     :no-data-text="`No matching games available`"
