@@ -44,7 +44,7 @@ var gameComponent = {
                             </v-list-tile>
                         </v-list>
                         <v-card-actions>
-                            <v-btn primary dark flat small v-on:click="showOnlyStreams">Show only this game</v-btn>
+                            <v-btn primary dark flat small v-on:click="filterStreams">Show only this game</v-btn>
                             <v-btn error dark flat small v-on:click="removeGame">Remove game</v-btn>
                         </v-card-actions>
                     </v-card>
@@ -53,8 +53,8 @@ var gameComponent = {
         </v-list-tile>
     `,
     methods: {
-        showOnlyStreams: function() {
-            this.$emit('show-only-streams');
+        filterStreams: function() {
+            this.$emit('filter-streams');
         },
         removeGame: function() {
             this.$emit('remove-game');
@@ -155,8 +155,8 @@ var app = new Vue({
                 game.display = true;
             })
         },
-        showOnlyStreams: function(gameName) {
-            this.closeMenu(game);
+        filterStreams: function(gameName) {
+            this.closeMenu(gameName);
 
             this.prefs.gameProps.forEach((game) => {
                 if (game.name == gameName) {
