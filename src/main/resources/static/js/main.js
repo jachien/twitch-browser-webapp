@@ -70,7 +70,8 @@ var app = new Vue({
             streams: [],
             streamsLoaded: {},
             agSelect: "",
-            agItems: [],
+            agItems: [""],  // contain empty string as a workaround for https://github.com/vuetifyjs/vuetify/issues/1880, 
+                            // though this causes an empty suggestions box to appear on first focus
             agSearch: null,
             agLoading: false,
             drawer: true
