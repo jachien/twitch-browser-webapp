@@ -129,6 +129,7 @@ var app = new Vue({
             axios.get('/api', config)
                 .then(
                     function (response) {
+                        console.log("streams request for " + game + " complete");
                         console.log(response);
 
                         if (response.data && response.data.streams) {
