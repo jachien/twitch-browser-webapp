@@ -1,14 +1,16 @@
 package org.jchien.twitchbrowser.controller;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import org.jchien.twitchbrowser.StreamsRequest;
 import org.jchien.twitchbrowser.StreamsResponse;
 import org.jchien.twitchbrowser.TwitchBrowserClient;
-import org.jchien.twitchbrowser.TwitchBrowserException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -27,8 +29,7 @@ public class BrowseController {
     }
 
     @RequestMapping(path = "/api", method = RequestMethod.GET)
-    @ResponseBody
-    String api(@RequestParam(name="game") String game, @RequestParam(name="start") int start, @RequestParam(name="limit") int limit) {
+    ResponseEntity<?> api(@RequestParam(name="game") String game, @RequestParam(name="start") int start, @RequestParam(name="limit") int limit) {
         StreamsRequest request = StreamsRequest.newBuilder()
                 .setGameName(game)
                 .setStart(start)
@@ -37,11 +38,10 @@ public class BrowseController {
 
         try {
             StreamsResponse response = twibroClient.getStreams(request);
-            return JsonFormat.printer().includingDefaultValueFields().print(response);
-        } catch (TwitchBrowserException e) {
-            return getStackTraceAsString(e);
-        } catch (InvalidProtocolBufferException e) {
-            return getStackTraceAsString(e);
+            String json = JsonFormat.printer().includingDefaultValueFields().print(response);
+            return ResponseEntity.ok(json);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
