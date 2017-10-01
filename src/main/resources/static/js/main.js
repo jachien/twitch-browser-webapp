@@ -94,6 +94,7 @@ var app = new Vue({
         prefs: {
             handler(prefs, oldPrefs) {
                 storePrefs(this.prefs);
+                this.loadVisibleStreams();
             },
             deep: true
         },
@@ -106,9 +107,11 @@ var app = new Vue({
         'game-component': gameComponent,
     },
     methods: {
-        loadAllStreams: function() {
+        loadVisibleStreams: function() {
             this.prefs.gameProps.forEach((game) => {
-                this.loadStreams(game.name, 0, 25);
+                if (game.display) {
+                    this.loadStreams(game.name, 0, 25);
+                }
             });
         },
         loadStreams: function(game, start, limit) {
@@ -239,6 +242,6 @@ var app = new Vue({
         }
     },
     created: function() {
-        this.loadAllStreams();
+        this.loadVisibleStreams();
     }
 });
