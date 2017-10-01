@@ -1,19 +1,20 @@
-package org.jchien.twitchbrowser;
+package org.jchien.twitchbrowser.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author jchien
  */
-@Configuration
+@Component
 @ConfigurationProperties(prefix="twibro")
-public class TwitchBrowserConfig {
+public class TwitchBrowserProperties {
 
     private String serviceHost;
 
     private int servicePort;
+
+    private String twitchApiClientId;
 
     public String getServiceHost() {
         return serviceHost;
@@ -31,8 +32,11 @@ public class TwitchBrowserConfig {
         this.servicePort = servicePort;
     }
 
-    @Bean(name="twitchBrowserClient")
-    public TwitchBrowserClient getClient() {
-        return new TwitchBrowserClient(serviceHost, servicePort);
+    public String getTwitchApiClientId() {
+        return twitchApiClientId;
+    }
+
+    public void setTwitchApiClientId(String twitchApiClientId) {
+        this.twitchApiClientId = twitchApiClientId;
     }
 }

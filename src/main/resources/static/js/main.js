@@ -66,6 +66,7 @@ var app = new Vue({
     el: '#app',
     data () {
         return {
+            clientId: clientId, // needs to be defined by whatever is including this js file
             prefs: readPrefs(),
             streams: [],
             streamsLoaded: {},
@@ -196,8 +197,7 @@ var app = new Vue({
             config = {
                 params: {
                     query: gameName,
-                    // todo extract this to config
-                    client_id: "ib5vu55l2rc4elcwyrqikyza4hio0y",
+                    client_id: this.clientId,
                     api_version: "5"
                 }
             };

@@ -6,6 +6,14 @@
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link type="text/css" href="/css/twitchbrowser.css" rel="stylesheet"/>
 
+    <script type="text/javascript">
+        <#-- 
+            set twitch api client id for main.js
+            is there a better way to pass this?
+        -->
+        var clientId = "${twitchApiClientId}";
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.js"></script>
     <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
