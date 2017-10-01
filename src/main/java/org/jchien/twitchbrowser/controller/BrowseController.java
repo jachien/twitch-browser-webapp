@@ -44,7 +44,7 @@ public class BrowseController {
     }
 
     @RequestMapping(path = "/api/streams", method = RequestMethod.GET)
-    public ResponseEntity<?> api(@RequestParam(name="game") String game, @RequestParam(name="start") int start, @RequestParam(name="limit") int limit) {
+    public ResponseEntity<?> streams(@RequestParam(name="game") String game, @RequestParam(name="start") int start, @RequestParam(name="limit") int limit) {
         StreamsRequest request = StreamsRequest.newBuilder()
                 .setGameName(game)
                 .setStart(start)
