@@ -71,8 +71,7 @@ var app = new Vue({
             streams: [],
             streamsLoaded: {},  // cache of successful /api/streams calls made, but doesn't contain the responses
             agSelect: "",       // add game autocomplete selected item
-            agItems: [""],  // contain empty string as a workaround for https://github.com/vuetifyjs/vuetify/issues/1880, 
-                            // though this causes an empty suggestions box to appear on first focus
+            agItems: [],
             agSearch: null,     // add game search input
             agLoading: false,
             drawer: true
