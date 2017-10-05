@@ -31,13 +31,13 @@
 </head>
 <body>
     <div id="app" v-cloak>
-        <v-app id="browser-app" toolbar footer dark>
+        <v-app id="browser-app" dark>
             <v-navigation-drawer
-              persistent
-              clipped
-              v-model="drawer"
-              enable-resize-watcher
-              dark
+                app
+                persistent
+                clipped
+                v-model="drawer"
+                enable-resize-watcher
             >
                 <v-list dense>
                     <v-list-tile avatar @click="showAllStreams()">
@@ -63,17 +63,16 @@
                     ></game-component>
                 </v-list>
             </v-navigation-drawer>
-            <v-toolbar dark fixed>
+            <v-toolbar app fixed clipped-left>
                 <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
                 <v-toolbar-title>Twitch Browser</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-spacer></v-spacer>
-                <v-btn primary dark @click="addGame()">Add game</v-btn>
+                <v-btn color="primary" @click="addGame()">Add game</v-btn>
                 <v-select
                     placeholder="Find game"
                     autocomplete
                     :async-loading="agLoading"
-                    dark
                     clearable
                     :items="agItems"
                     :search-input.sync="agSearch"
@@ -82,20 +81,22 @@
                 ></v-select>
             </v-toolbar>
             <main>
-                <v-container fluid>
-                    <stream-component
-                        v-for="stream in streams"
-                        :key="stream.channelId"
-                        v-bind:stream="stream"
-                        v-bind:prefs="prefs"
-                        v-bind:game-idxs="gameIdxs"
-                    ></stream-component>
+                <v-content>
+                    <v-container fluid>
+                        <stream-component
+                            v-for="stream in streams"
+                            :key="stream.channelId"
+                            v-bind:stream="stream"
+                            v-bind:prefs="prefs"
+                            v-bind:game-idxs="gameIdxs"
+                        ></stream-component>
 
-                    <#-- spacer to avoid fixed footer overlapping content -->
-                    <div class="ma-4" />
-                </v-container>
+                        <#-- spacer to avoid fixed footer overlapping content -->
+                        <div class="ma-4"></div>
+                    </v-container>
+                </v-content>
             </main>
-            <v-footer fixed dark>
+            <v-footer app fixed>
                 <span class="white--text"></span>
             </v-footer>
         </v-app>

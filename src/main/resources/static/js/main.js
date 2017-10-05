@@ -16,7 +16,7 @@ var gameComponent = {
     template: `
         <v-list-tile @click="">
             <v-list-tile-action>
-                <v-switch dark v-model="gameProp.display"></v-switch>
+                <v-switch v-model="gameProp.display"></v-switch>
             </v-list-tile-action>
             <v-list-tile-content v-bind:title="gameProp.name">
                 <v-list-tile-title>
@@ -32,7 +32,7 @@ var gameComponent = {
                     <v-btn icon slot="activator">
                         <v-icon>keyboard_arrow_down</v-icon>
                     </v-btn>
-                    <v-card dark>
+                    <v-card>
                         <v-list>
                             <v-list-tile avatar>
                                 <v-list-tile-avatar>
@@ -44,8 +44,8 @@ var gameComponent = {
                             </v-list-tile>
                         </v-list>
                         <v-card-actions>
-                            <v-btn primary dark flat small v-on:click="filterStreams">Show only this game</v-btn>
-                            <v-btn error dark flat small v-on:click="removeGame">Remove game</v-btn>
+                            <v-btn color="primary" flat small v-on:click="filterStreams">Show only this game</v-btn>
+                            <v-btn color="error" flat small v-on:click="removeGame">Remove game</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-menu>
