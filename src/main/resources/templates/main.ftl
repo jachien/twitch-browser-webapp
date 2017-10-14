@@ -4,7 +4,7 @@
     <title>Twitch Browser</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <link type="text/css" href="/css/twitchbrowser.css" rel="stylesheet"/>
+    <link type="text/css" href="${resourceUrlProvider.getForLookupPath('/css/twitchbrowser.css')}" rel="stylesheet"/>
 
     <script type="text/javascript">
         <#-- 
@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.js"></script>
     <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="/js/preferences.js"></script>
+    <script src="${resourceUrlProvider.getForLookupPath('/js/preferences.js')}"></script>
 
     <#-- 
         hide content before vue renders it 
@@ -102,6 +102,6 @@
         </v-app>
     </div>
 
-    <script src="/js/main.js"></script>
+    <script src="${resourceUrlProvider.getForLookupPath('/js/main.js')}"></script>
 </body>
 </html>

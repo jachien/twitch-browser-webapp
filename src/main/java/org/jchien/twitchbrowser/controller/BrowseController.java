@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,20 +27,29 @@ public class BrowseController {
 
     private String twitchApiClientId;
 
+    // mvcResourceUrlProvider bean is provided by spring boot (due to spring mvc being on classpath)
+    private ResourceUrlProvider resourceUrlProvider;
+
     @Autowired
-    public BrowseController(TwitchBrowserClient twibroClient, TwitchBrowserProperties props) {
-        this(twibroClient, props.getTwitchApiClientId());
+    public BrowseController(TwitchBrowserClient twibroClient,
+                            TwitchBrowserProperties props,
+                            ResourceUrlProvider resourceUrlProvider) {
+        this(twibroClient, props.getTwitchApiClientId(), resourceUrlProvider);
     }
 
-    private BrowseController(TwitchBrowserClient twibroClient, String twitchApiClientId) {
+    private BrowseController(TwitchBrowserClient twibroClient,
+                             String twitchApiClientId,
+                             ResourceUrlProvider resourceUrlProvider) {
         this.twibroClient = twibroClient;
         this.twitchApiClientId = twitchApiClientId;
+        this.resourceUrlProvider = resourceUrlProvider;
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         final Map<String, Object> model = new HashMap<>();
         model.put("twitchApiClientId", twitchApiClientId);
+        model.put("resourceUrlProvider", resourceUrlProvider);
         return new ModelAndView("main", model);
     }
 
