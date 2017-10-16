@@ -5,6 +5,8 @@ import org.jchien.twitchbrowser.StreamsRequest;
 import org.jchien.twitchbrowser.StreamsResponse;
 import org.jchien.twitchbrowser.TwitchBrowserClient;
 import org.jchien.twitchbrowser.config.TwitchBrowserProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ import java.util.Map;
  */
 @Controller
 public class BrowseController {
+    private static final Logger LOG = LoggerFactory.getLogger(BrowseController.class);
+
     private TwitchBrowserClient twibroClient;
 
     private String twitchApiClientId;
@@ -66,6 +70,7 @@ public class BrowseController {
             String json = JsonFormat.printer().includingDefaultValueFields().print(response);
             return ResponseEntity.ok(json);
         } catch (Exception e) {
+            LOG.warn("exception serving streams request", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
