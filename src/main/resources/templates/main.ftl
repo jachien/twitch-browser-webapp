@@ -34,10 +34,10 @@
         <v-app id="browser-app" dark>
             <v-navigation-drawer
                 app
+                fixed
                 persistent
                 clipped
                 v-model="drawer"
-                enable-resize-watcher
             >
                 <v-list dense>
                     <v-list-tile avatar @click="showAllStreams()">
@@ -80,22 +80,20 @@
                     v-model="agSelect"
                 ></v-select>
             </v-toolbar>
-            <main>
-                <v-content>
-                    <v-container fluid>
-                        <stream-component
-                            v-for="stream in streams"
-                            :key="stream.channelId"
-                            v-bind:stream="stream"
-                            v-bind:prefs="prefs"
-                            v-bind:game-idxs="gameIdxs"
-                        ></stream-component>
+            <v-content>
+                <v-container fluid>
+                    <stream-component
+                        v-for="stream in streams"
+                        :key="stream.channelId"
+                        v-bind:stream="stream"
+                        v-bind:prefs="prefs"
+                        v-bind:game-idxs="gameIdxs"
+                    ></stream-component>
 
-                        <#-- spacer to avoid fixed footer overlapping content -->
-                        <div class="ma-4"></div>
-                    </v-container>
-                </v-content>
-            </main>
+                    <#-- spacer to avoid fixed footer overlapping content -->
+                    <div class="ma-4"></div>
+                </v-container>
+            </v-content>
             <v-footer app fixed>
                 <span class="white--text"></span>
             </v-footer>
