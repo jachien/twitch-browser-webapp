@@ -14,7 +14,7 @@
         var clientId = "${twitchApiClientId}";
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
     <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="${resourceUrlProvider.getForLookupPath('/js/preferences.js')}"></script>
