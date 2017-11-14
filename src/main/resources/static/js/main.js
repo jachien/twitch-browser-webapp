@@ -175,7 +175,7 @@ var app = new Vue({
                     if (this.agSelect == game) {
                         let prop = createGameProp(game);
                         this.prefs.gameProps.push(prop);
-                        this.loadStreams(game, 0, 25);
+                        // don't need to load streams here, prefs watcher takes care of it
                         return true;
                     }
                     return false;
