@@ -15,28 +15,40 @@
         [v-cloak] {
             display: none;
         }
+
+        .container {
+            height: 400px;
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item {
+            text-align: center;
+        }
+
+        main {
+            background: #303030;
+        }
     </style>
 </head>
 <body>
     <div id="app" v-cloak>
         <v-app dark>
-            <v-toolbar app fixed>
+            <v-toolbar app>
                 <v-icon>ondemand_video</v-icon>
                 <v-toolbar-title>Twitch Browser</v-toolbar-title>
             </v-toolbar>
-            <main>
-                <v-content>
-                    <v-container fill-height>
-                        <v-layout row wrap align-center>
-                            <v-flex class="text-xs-center">
-                                <h1>404 Not Found :(</h1>
-                                <div><a href="https://streams.jchien.org">streams.jchien.org</a></div>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-content>
-            </main>
-            <v-footer app fixed>
+            <v-content>
+                <#-- todo: recreate this using vuetify -->
+                <div class="container">
+                    <div class="item"><h1>404 Not Found :(</h1></div>
+                    <#-- todo: make host configurable -->
+                    <div class="item"><a href="https://streams.jchien.org">streams.jchien.org</a></div>
+                </div>
+            </v-content>
+            <v-footer app>
                 <span class="white--text"></span>
             </v-footer>
         </v-app>
