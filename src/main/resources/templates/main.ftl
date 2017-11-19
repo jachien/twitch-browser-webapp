@@ -2,8 +2,10 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Twitch Browser</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+
+    <#list externalCss as item>
+    <link type="text/css" href="${item}" rel="stylesheet">
+    </#list>
     <link type="text/css" href="${resourceUrlProvider.getForLookupPath('/css/twitchbrowser.css')}" rel="stylesheet"/>
 
     <script type="text/javascript">
@@ -14,8 +16,9 @@
         var clientId = "${twitchApiClientId}";
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
-    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <#list externalScripts as item>
+    <script src="${item}"></script>
+    </#list>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="${resourceUrlProvider.getForLookupPath('/js/preferences.js')}"></script>
 

@@ -2,10 +2,14 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Twitch Browser</title>
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
-    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+
+    <#list externalCss as item>
+    <link href='${item}' rel="stylesheet">
+    </#list>
+
+    <#list externalScripts as item>
+    <script src="${item}"></script>
+    </#list>
 
     <#--
         hide content before vue renders it

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,19 +35,31 @@ public class BrowseController {
     // mvcResourceUrlProvider bean is provided by spring boot (due to spring mvc being on classpath)
     private ResourceUrlProvider resourceUrlProvider;
 
+    private Collection<String> externalScripts;
+
+    private Collection<String> externalCss;
+
     @Autowired
     public BrowseController(TwitchBrowserClient twibroClient,
                             TwitchBrowserProperties props,
                             ResourceUrlProvider resourceUrlProvider) {
-        this(twibroClient, props.getTwitchApiClientId(), resourceUrlProvider);
+        this(twibroClient,
+                props.getTwitchApiClientId(),
+                resourceUrlProvider,
+                props.getExternalScripts(),
+                props.getExternalCss());
     }
 
     private BrowseController(TwitchBrowserClient twibroClient,
                              String twitchApiClientId,
-                             ResourceUrlProvider resourceUrlProvider) {
+                             ResourceUrlProvider resourceUrlProvider,
+                             Collection<String> externalScripts,
+                             Collection<String> externalCss) {
         this.twibroClient = twibroClient;
         this.twitchApiClientId = twitchApiClientId;
         this.resourceUrlProvider = resourceUrlProvider;
+        this.externalScripts = externalScripts;
+        this.externalCss = externalCss;
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -54,6 +67,8 @@ public class BrowseController {
         final Map<String, Object> model = new HashMap<>();
         model.put("twitchApiClientId", twitchApiClientId);
         model.put("resourceUrlProvider", resourceUrlProvider);
+        model.put("externalScripts", externalScripts);
+        model.put("externalCss", externalCss);
         return new ModelAndView("main", model);
     }
 
