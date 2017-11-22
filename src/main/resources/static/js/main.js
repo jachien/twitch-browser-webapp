@@ -92,6 +92,8 @@ var app = new Vue({
     watch: {
         prefs: {
             handler(prefs, oldPrefs) {
+                //console.log("prefs:\n" + getPrefsDebugString(prefs));
+
                 storePrefs(this.prefs);
                 this.loadVisibleStreams();
             },
@@ -118,7 +120,8 @@ var app = new Vue({
                 return;
             }
 
-            console.log(game + " " + start + " " + limit)
+            this.streamsLoaded[game] = true; // eagerly mark streams as loaded, unmark if ajax call errors
+            console.log(game + " " + start + " " + limit);
 
             config = {
                 params: {
@@ -137,12 +140,11 @@ var app = new Vue({
                         if (response.data && response.data.streams) {
                             this.appendStreams(response.data.streams);
                         }
-
-                        this.streamsLoaded[game] = true;
                     }.bind(this)
                 ).catch(
                     function (error) {
                         console.log(error);
+                        this.streamsLoaded[game] = false;
                     }
                 );
         },

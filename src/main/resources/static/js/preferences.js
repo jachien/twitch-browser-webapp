@@ -29,6 +29,16 @@ function createGameProp(game) {
 	}
 }
 
+function getPrefsDebugString(prefs) {
+	let ret = "";
+
+	prefs.gameProps.forEach((game) => {
+        ret += "[name: " + game.name + ", disp: " + game.display + ", menu: " + game.menu + ", ct: " + game.createTime + "]\n";
+    });
+
+    return ret;
+}
+
 function readPrefs() {
     if (!localStorage.getItem(prefsKey)) {
         let prefs = createPrefs(defaultGames);
