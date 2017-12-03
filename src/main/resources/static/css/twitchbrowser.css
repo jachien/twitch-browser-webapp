@@ -8,10 +8,15 @@
     margin: 10px;
 }
 
-.stream_item div {
+.stream_card_text {
+  padding: 8px;
+}
+
+.stream_text div {
     margin: 2px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
     font: 12px Helvetica,Arial,sans-serif;
+    line-height: 1.25em; /* make spacing between lines consistent, without this some characters make an entire line taller than others */
 }

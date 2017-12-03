@@ -2,11 +2,16 @@ var streamComponent = {
     props: ['stream', 'gamePropMap'],
     template: `
         <div class="stream_item" v-show="gamePropMap.hasOwnProperty(stream.gameName) && gamePropMap[stream.gameName].display" v-bind:id="'stream-' + stream.channelId">
-            <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
-            <div><strong>{{stream.displayName}}</strong></div>
-            <div>{{stream.status}}</div>
-            <div><strong>{{stream.gameName}}</strong></div>
-            <div>{{stream.numViewers}} viewers</div>
+            <v-card>
+                <a v-bind:href="stream.channelUrl"><v-card-media v-bind:src="stream.previewUrl" height="180px" contain></v-card-media></a>
+                <v-card-text class="stream_card_text">
+                    <div class="stream_text">
+                        <div><strong>{{stream.displayName}}</strong></div>
+                        <div>{{stream.status}}</div>
+                        <div><strong>{{stream.gameName}}</strong></div>
+                        <div>{{stream.numViewers}} viewers</div>
+                    </div>
+                </v-card-text>
         </div>
     `
 };
