@@ -1,4 +1,4 @@
-var prefsKey = 'prefs';
+var prefsKey = 'prefs.v0.1';
 
 var defaultGames = [ 'Dota 2', 'PLAYERUNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
 
@@ -24,7 +24,6 @@ function createGameProp(game) {
 	return {
 		name: game,
 		display: true,
-		menu: false,
 		createTime: date.getTime()
 	}
 }
@@ -33,7 +32,7 @@ function getPrefsDebugString(prefs) {
 	let ret = "";
 
 	prefs.gameProps.forEach((game) => {
-        ret += "[name: " + game.name + ", disp: " + game.display + ", menu: " + game.menu + ", ct: " + game.createTime + "]\n";
+        ret += "[name: " + game.name + ", disp: " + game.display + ", ct: " + game.createTime + "]\n";
     });
 
     return ret;

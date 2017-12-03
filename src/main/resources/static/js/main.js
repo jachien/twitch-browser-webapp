@@ -12,7 +12,7 @@ var streamComponent = {
 };
 
 var gameComponent = {
-    props: ['gameProp'],
+    props: ['gameProp', 'auxProp'],
     template: `
         <v-list-tile @click="">
             <v-list-tile-action>
@@ -27,7 +27,7 @@ var gameComponent = {
                 <v-menu
                     offset-y
                     :close-on-content-click="false"
-                    v-model="gameProp.menu"
+                    v-model="auxProp.menu"
                 >
                     <v-btn icon slot="activator">
                         <v-icon>keyboard_arrow_down</v-icon>
@@ -67,7 +67,8 @@ var app = new Vue({
     data () {
         return {
             clientId: clientId, // needs to be defined by whatever is including this js file
-            prefs: readPrefs(),
+            prefs: {},
+            auxData: {},
             streams: [],
             streamsLoaded: {},  // cache of successful /api/streams calls made, but doesn't contain the responses
             agSelect: "",       // add game autocomplete selected item
@@ -175,6 +176,8 @@ var app = new Vue({
             if (this.agSelect && !this.gameIdxs.hasOwnProperty(this.agSelect)) {
                 this.agItems.some((game) => {
                     if (this.agSelect == game) {
+                        this.initAuxProp(game);
+
                         let prop = createGameProp(game);
                         this.prefs.gameProps.push(prop);
                         // don't need to load streams here, prefs watcher takes care of it
@@ -238,11 +241,24 @@ var app = new Vue({
             this.agLoading = false;
         },
         closeMenu: function(game) {
-            let idx = this.gameIdxs[game];
-            this.prefs.gameProps[idx].menu = false;
+            this.auxData[game].menu = false;
+        },
+        initAuxData: function(prefs) {
+            prefs.gameProps.forEach((game) => {
+                this.initAuxProp(game.name)
+            });
+        },
+        initAuxProp: function(gameName) {
+            this.auxData[gameName] = {
+                menu: false
+            };
         }
     },
     created: function() {
+        let prefs = readPrefs();
+        // app.auxData needs to be updated before app.prefs is updated
+        this.initAuxData(prefs);
+        this.prefs = prefs;
         this.loadVisibleStreams();
     }
 });

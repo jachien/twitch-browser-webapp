@@ -61,6 +61,7 @@
                         v-for="game in prefs.gameProps"
                         :key="game.name + '-' + game.createTime"
                         :game-prop="prefs.gameProps[gameIdxs[game.name]]"
+                        :aux-prop="auxData[game.name]"
                         v-on:filter-streams="filterStreams(game.name)"
                         v-on:remove-game="removeGame(game.name)"
                     ></game-component>
