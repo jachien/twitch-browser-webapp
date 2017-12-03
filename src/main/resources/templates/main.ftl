@@ -9,7 +9,7 @@
     <link type="text/css" href="${resourceUrlProvider.getForLookupPath('/css/twitchbrowser.css')}" rel="stylesheet"/>
 
     <script type="text/javascript">
-        <#-- 
+        <#--
             set twitch api client id for main.js
             is there a better way to pass this?
         -->
@@ -22,8 +22,8 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="${resourceUrlProvider.getForLookupPath('/js/preferences.js')}"></script>
 
-    <#-- 
-        hide content before vue renders it 
+    <#--
+        hide content before vue renders it
         http://vuetips.com/v-cloak-directive-hides-html-on-startup
     -->
     <style>
@@ -55,7 +55,7 @@
                     <v-divider></v-divider>
 
                     <v-subheader>Games</v-subheader>
-                    
+
                     <#-- games list -->
                     <game-component
                         v-for="game in prefs.gameProps"
