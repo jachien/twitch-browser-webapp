@@ -1,8 +1,11 @@
+.stream_container {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .stream_item {
     width: 320px;
-    display: inline-block;
     margin: 10px;
-    vertical-align: top;
 }
 
 .stream_item div {

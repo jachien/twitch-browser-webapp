@@ -86,15 +86,14 @@
             </v-toolbar>
             <v-content>
                 <v-container fluid>
-                    <stream-component
-                        v-for="stream in streams"
-                        :key="stream.channelId"
-                        v-bind:stream="stream"
-                        v-bind:game-prop-map="gamePropMap"
-                    ></stream-component>
-
-                    <#-- spacer to avoid fixed footer overlapping content -->
-                    <div class="ma-4"></div>
+                    <div class="stream_container">
+                        <stream-component
+                            v-for="stream in streams"
+                            :key="stream.channelId"
+                            v-bind:stream="stream"
+                            v-bind:game-prop-map="gamePropMap"
+                        ></stream-component>
+                    </div>
                 </v-container>
             </v-content>
             <v-footer app fixed>
