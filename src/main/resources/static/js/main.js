@@ -12,6 +12,7 @@ var streamComponent = {
                         <div>{{stream.numViewers}} viewers</div>
                     </div>
                 </v-card-text>
+            </v-card>
         </div>
     `
 };
