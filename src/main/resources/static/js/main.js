@@ -1,7 +1,7 @@
 var streamComponent = {
-    props: ['stream', 'prefs', 'gameIdxs'],
+    props: ['stream', 'gamePropMap'],
     template: `
-        <div class="stream_item" v-show="gameIdxs.hasOwnProperty(stream.gameName) && prefs.gameProps[gameIdxs[stream.gameName]].display" v-bind:id="'stream-' + stream.channelId">
+        <div class="stream_item" v-show="gamePropMap.hasOwnProperty(stream.gameName) && gamePropMap[stream.gameName].display" v-bind:id="'stream-' + stream.channelId">
             <div><a v-bind:href="stream.channelUrl"><img v-bind:src="stream.previewUrl"/></a></div>
             <div><strong>{{stream.displayName}}</strong></div>
             <div>{{stream.status}}</div>
@@ -80,14 +80,12 @@ var app = new Vue({
 
     },
     computed: {
-        gameIdxs: function() {
-            let gameIdxs = {}
-            let idx = 0;
+        gamePropMap: function() {
+            let map = {};
             this.prefs.gameProps.forEach((game) => {
-                gameIdxs[game.name] = idx;
-                idx++;
+                map[game.name] = game;
             });
-            return gameIdxs;
+            return map;
         }
     },
     watch: {
@@ -173,7 +171,7 @@ var app = new Vue({
             })
         },
         addGame: function() {
-            if (this.agSelect && !this.gameIdxs.hasOwnProperty(this.agSelect)) {
+            if (this.agSelect && !this.gamePropMap.hasOwnProperty(this.agSelect)) {
                 this.agItems.some((game) => {
                     if (this.agSelect == game) {
                         this.initAuxProp(game);
@@ -184,14 +182,20 @@ var app = new Vue({
                         return true;
                     }
                     return false;
-                })
+                });
             }
         },
         removeGame: function(game) {
             this.closeMenu(game);
 
-            let idx = this.gameIdxs[game];
-            this.prefs.gameProps.splice(idx, 1);
+            let idx = 0;
+            while (idx < this.prefs.gameProps.length) {
+                if (this.prefs.gameProps[idx].name == game) {
+                    this.prefs.gameProps.splice(idx, 1);
+                    return;
+                }
+                idx++;
+            }
         },
         queryGames: function(gameName) {
             if (!gameName) {

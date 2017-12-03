@@ -60,7 +60,7 @@
                     <game-component
                         v-for="game in prefs.gameProps"
                         :key="game.name + '-' + game.createTime"
-                        :game-prop="prefs.gameProps[gameIdxs[game.name]]"
+                        :game-prop="gamePropMap[game.name]"
                         :aux-prop="auxData[game.name]"
                         v-on:filter-streams="filterStreams(game.name)"
                         v-on:remove-game="removeGame(game.name)"
@@ -90,8 +90,7 @@
                         v-for="stream in streams"
                         :key="stream.channelId"
                         v-bind:stream="stream"
-                        v-bind:prefs="prefs"
-                        v-bind:game-idxs="gameIdxs"
+                        v-bind:game-prop-map="gamePropMap"
                     ></stream-component>
 
                     <#-- spacer to avoid fixed footer overlapping content -->
