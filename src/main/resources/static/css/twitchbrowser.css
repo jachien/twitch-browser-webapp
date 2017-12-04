@@ -31,9 +31,9 @@
 }
 
 .stream_preview {
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0.6) 25%,
-    rgba(0, 0, 0, 0.0) 40%
-  )
+    background: linear-gradient(
+        to bottom,
+        rgba(12,12,12,0.8) 0,
+        transparent 80px
+    );
 }
