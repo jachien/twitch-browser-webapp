@@ -45,7 +45,7 @@ function readPrefs() {
 
     let prefsJson = localStorage.getItem(prefsKey);
     let prefs = JSON.parse(prefsJson);
-    
+
     sortGameProps(prefs);
 
     return prefs;
