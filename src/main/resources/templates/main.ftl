@@ -86,7 +86,7 @@
             </v-toolbar>
             <v-content>
                 <v-container fluid>
-                    <div class="stream_container">
+                    <div id="stream_container">
                         <stream-component
                             v-for="stream in streams"
                             :key="stream.channelId"
