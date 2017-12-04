@@ -29,3 +29,11 @@
 #stream_container a:hover {
     color: #1976D2;
 }
+
+.stream_preview {
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0.6) 25%,
+    rgba(0, 0, 0, 0.0) 40%
+  )
+}
