@@ -1,7 +1,12 @@
 var streamComponent = {
-    props: ['stream', 'gamePropMap'],
+    props: ['stream', 'gamePropMap', 'gameColorMap'],
     template: `
-        <v-card class="stream_item" v-show="gamePropMap.hasOwnProperty(stream.gameName) && gamePropMap[stream.gameName].display" v-bind:id="'stream-' + stream.channelId">
+        <v-card
+            class="stream_item"
+            v-bind:color="gameColorMap[stream.gameName]"
+            v-show="gamePropMap.hasOwnProperty(stream.gameName) && gamePropMap[stream.gameName].display"
+            v-bind:id="'stream-' + stream.channelId"
+        >
             <a v-bind:href="stream.channelUrl">
                 <v-card-media v-bind:src="stream.previewUrl" height="180px" contain>
                     <v-container class="stream_preview" fill-height fluid>
@@ -88,7 +93,7 @@ var app = new Vue({
             agItems: [],
             agSearch: null,     // add game search input
             agLoading: false,
-            drawer: true
+            drawer: true,
         }
 
     },
@@ -98,6 +103,45 @@ var app = new Vue({
             this.prefs.gameProps.forEach((game) => {
                 map[game.name] = game;
             });
+            return map;
+        },
+        gameColorMap: function() {
+            let colors = [
+                "deep-purple",
+                "indigo",
+                "blue",
+                "light-blue",
+                "cyan",
+                "teal",
+                "green",
+                "light-green",
+                "blue-grey",
+                "grey",
+            ]
+            let shades = [
+                "darken-2",
+                "darken-4",
+            ]
+
+            let sortedGameProps = this.prefs.gameProps.slice().sort(function(a, b) {
+                if (a.createTime != b.createTime) {
+                    return a.createTime - b.createTime;
+                }
+                return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
+            });
+
+            let map = {};
+            let colorIdx = 0;
+            let shadeIdx = 0;
+            sortedGameProps.forEach((game) => {
+                map[game.name] = colors[colorIdx] + " " + shades[shadeIdx];
+                colorIdx++;
+                if (colorIdx == colors.length) {
+                    colorIdx = 0;
+                    shadeIdx = (shadeIdx + 1) % shades.length;
+                }
+            });
+
             return map;
         }
     },

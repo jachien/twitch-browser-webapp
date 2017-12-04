@@ -92,6 +92,7 @@
                             :key="stream.channelId"
                             v-bind:stream="stream"
                             v-bind:game-prop-map="gamePropMap"
+                            v-bind:game-color-map="gameColorMap"
                         ></stream-component>
                     </div>
                 </v-container>
