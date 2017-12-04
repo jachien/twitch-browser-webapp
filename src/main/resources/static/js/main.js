@@ -11,7 +11,7 @@ var streamComponent = {
                     <v-container class="stream_preview" fill-height fluid>
                       <v-layout>
                         <v-flex>
-                          <div class="title">{{stream.displayName}}</div>
+                          <div class="title channel_name">{{stream.displayName}}</div>
                         </v-flex>
                       </v-layout>
                     </v-container>
