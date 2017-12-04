@@ -93,6 +93,7 @@
                             v-bind:stream="stream"
                             v-bind:game-prop-map="gamePropMap"
                             v-bind:game-color-map="gameColorMap"
+                            v-on:filter-streams="filterStreams(stream.gameName)"
                         ></stream-component>
                     </div>
                 </v-container>

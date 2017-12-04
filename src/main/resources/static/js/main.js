@@ -19,7 +19,7 @@ var streamComponent = {
             </a>
             <v-card-text v-bind:class="gameColorMap[stream.gameName] + ' stream_card_text'">
                 <div class="stream_text">
-                    <div><strong>{{stream.gameName}}</strong></div>
+                    <div><strong><a v-on:click="filterStreams">{{stream.gameName}}</a></strong></div>
                 </div>
             </v-card-text>
             <v-card-text class="stream_card_text">
@@ -29,7 +29,12 @@ var streamComponent = {
                 </div>
             </v-card-text>
         </v-card>
-    `
+    `,
+    methods: {
+        filterStreams: function() {
+            this.$emit('filter-streams');
+        }
+    }
 };
 
 var gameComponent = {
