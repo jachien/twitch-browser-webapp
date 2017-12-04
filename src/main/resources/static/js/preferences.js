@@ -2,8 +2,6 @@ var prefsKey = 'prefs.v0.1';
 
 var defaultGames = [ 'Dota 2', 'PLAYERUNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
 
-var date = new Date();
-
 function createPrefs(games) {
 	// make sure games is sorted, but don't modify the arg
 	games = games.slice().sort();
@@ -21,6 +19,7 @@ function createPrefs(games) {
 }
 
 function createGameProp(game) {
+	var date = new Date();
 	return {
 		name: game,
 		display: true,
