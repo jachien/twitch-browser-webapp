@@ -3,7 +3,6 @@ var streamComponent = {
     template: `
         <v-card
             class="stream_item"
-            v-bind:color="gameColorMap[stream.gameName]"
             v-show="gamePropMap.hasOwnProperty(stream.gameName) && gamePropMap[stream.gameName].display"
             v-bind:id="'stream-' + stream.channelId"
         >
@@ -18,10 +17,14 @@ var streamComponent = {
                     </v-container>
                 </v-card-media>
             </a>
+            <v-card-text v-bind:class="gameColorMap[stream.gameName] + ' stream_card_text'">
+                <div class="stream_text">
+                    <div><strong>{{stream.gameName}}</strong></div>
+                </div>
+            </v-card-text>
             <v-card-text class="stream_card_text">
                 <div class="stream_text">
                     <div><a v-bind:href="stream.channelUrl">{{stream.status}}</a></div>
-                    <div><strong>{{stream.gameName}}</strong></div>
                     <div>{{stream.numViewers}} viewers</div>
                 </div>
             </v-card-text>
