@@ -17,7 +17,7 @@ var streamComponent = {
                     </v-container>
                 </v-card-media>
             </a>
-            <v-card-text v-bind:class="gameColorMap[stream.gameName] + ' stream_card_text'">
+            <v-card-text class="stream_card_text" v-bind:style="'background:'+gameColorMap[stream.gameName]+';'">
                 <div class="stream_text">
                     <div><strong><a v-on:click="filterStreams">{{stream.gameName}}</a></strong></div>
                 </div>
@@ -46,7 +46,7 @@ var gameComponent = {
             </v-list-tile-action>
             <v-list-tile-content v-bind:title="gameProp.name">
                 <v-list-tile-title>
-                    {{ gameProp.name }}
+                    <a v-on:click="filterStreams">{{ gameProp.name }}</a>
                 </v-list-tile-title>
             </v-list-tile-content>
             <v-list-tile-action>
@@ -115,20 +115,19 @@ var app = new Vue({
         },
         gameColorMap: function() {
             let colors = [
-                "deep-purple",
-                "indigo",
-                "blue",
-                "light-blue",
-                "cyan",
-                "teal",
-                "green",
-                "light-green",
-                "blue-grey",
-                "grey",
-            ]
-            let shades = [
-                "darken-2",
-                "darken-4",
+                "#880e4f", // pink
+                "#33691e", // light green
+                "#0d47A1", // blue
+                "#006064", // cyan
+                "#311b92", // deep purple
+                "#004d40", // teal
+                "#1a237e", // indigo
+                "#1b5e20", // green
+                "#4a148c", // purple
+                "#01579b", // light blue
+                "#3e2723", // brown
+                "#212121", // grey
+                "#263238", // blue grey
             ]
 
             let sortedGameProps = this.prefs.gameProps.slice().sort(function(a, b) {
@@ -140,14 +139,9 @@ var app = new Vue({
 
             let map = {};
             let colorIdx = 0;
-            let shadeIdx = 0;
             sortedGameProps.forEach((game) => {
-                map[game.name] = colors[colorIdx] + " " + shades[shadeIdx];
-                colorIdx++;
-                if (colorIdx == colors.length) {
-                    colorIdx = 0;
-                    shadeIdx = (shadeIdx + 1) % shades.length;
-                }
+                map[game.name] = colors[colorIdx];
+                colorIdx = (colorIdx + 1) % colors.length;
             });
 
             return map;
