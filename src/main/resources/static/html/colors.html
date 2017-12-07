@@ -1,0 +1,101 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Twitch Browser</title>
+
+    <link type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons" rel="stylesheet">
+    <link type="text/css" href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.js"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .container {
+            height: 500px;
+            display: flex;
+            flex-flow: column wrap;
+            align-content: center;
+        }
+
+        .stream_item {
+            width: 320px;
+            margin: 10px;
+        }
+
+        .stream_card_text {
+          padding: 8px;
+        }
+
+        .stream_text div {
+            margin: 2px;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-all;
+            font: 12px Helvetica,Arial,sans-serif;
+            line-height: 1.25em; /* make spacing between lines consistent, without this some characters make an entire line taller than others */
+        }
+
+
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <v-app dark>
+        <v-toolbar app>
+            <v-icon>ondemand_video</v-icon>
+            <v-toolbar-title>Twitch Browser</v-toolbar-title>
+        </v-toolbar>
+        <v-content>
+            <v-container fluid>
+                <div class="container">
+                    <v-card class="stream_item" v-for="color in colors">
+                        <v-card-text class="stream_card_text" v-bind:style="'background:'+color+';'">
+                            <div class="stream_text">
+                                <div><strong>{{color}}</strong></div>
+                            </div>
+                        </v-card-text>
+                        <v-card-text class="stream_card_text">
+                            <div class="stream_text">
+                                <div>This is status text.</div>
+                                <div>0 viewers</div>
+                            </div>
+                        </v-card-text>
+                    </v-card>
+                </div>
+            </v-container>
+        </v-content>
+        <v-footer app>
+            <span class="white--text"></span>
+        </v-footer>
+    </v-app>
+</div>
+
+<script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                colors: [
+                    "#880e4f", // 0 pink
+                    "#4a148c", // 1 purple
+                    "#311b92", // 2 deep purple
+                    "#1a237e", // 3 indigo
+                    "#0d47A1", // 4 blue
+                    "#01579b", // 5 light blue
+                    "#006064", // 6 cyan
+                    "#004d40", // 7 teal
+                    "#1b5e20", // 8 green
+                    "#33691e", // 9 light green
+                    "#3e2723", // 10 brown
+                    "#212121", // 11 grey
+                    "#263238", // 12 blue grey
+                ]
+            }
+        });
+    </script>
+</body>
+</html>

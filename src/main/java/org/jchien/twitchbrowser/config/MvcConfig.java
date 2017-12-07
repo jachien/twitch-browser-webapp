@@ -17,6 +17,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         addResourceHandler(registry, "/js/**", "classpath:/static/js/");
         addResourceHandler(registry, "/css/**", "classpath:/static/css/");
+        addResourceHandler(registry, "/html/**", "classpath:/static/html/");
     }
 
     private void addResourceHandler(ResourceHandlerRegistry registry, String pathPattern, String resourceLocation) {
