@@ -115,19 +115,16 @@ var app = new Vue({
         },
         gameColorMap: function() {
             let colors = [
-                "#880e4f", // pink
-                "#33691e", // light green
-                "#0d47A1", // blue
-                "#006064", // cyan
-                "#311b92", // deep purple
-                "#004d40", // teal
-                "#1a237e", // indigo
-                "#1b5e20", // green
-                "#4a148c", // purple
-                "#01579b", // light blue
-                "#3e2723", // brown
-                "#212121", // grey
-                "#263238", // blue grey
+                "#710c42", // 0 pink
+                "#4a148c", // 1 purple
+                "#1a237e", // 2 indigo
+                "#01579b", // 3 light blue
+                "#006064", // 4 cyan
+                "#004d40", // 5 teal
+                "#1b5e20", // 6 green
+                "#3c2e3d", // 7 cranberry
+                "#212121", // 8 grey
+                "#263238", // 9 blue grey
             ]
 
             let sortedGameProps = this.prefs.gameProps.slice().sort(function(a, b) {
