@@ -8,7 +8,7 @@ var streamComponent = {
         >
             <a v-bind:href="stream.channelUrl">
                 <v-card-media v-bind:src="stream.previewUrl" height="180px" contain>
-                    <v-container class="stream_preview" fill-height fluid>
+                    <v-container class="stream_preview_overlay" fill-height fluid>
                       <v-layout>
                         <v-flex>
                           <div class="title channel_name">{{stream.displayName}}</div>
