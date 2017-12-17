@@ -21,6 +21,7 @@
     </#list>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="${resourceUrlProvider.getForLookupPath('/js/preferences.js')}"></script>
+    <script src="${resourceUrlProvider.getForLookupPath('/js/state.js')}"></script>
 
     <#--
         hide content before vue renders it
@@ -58,10 +59,10 @@
 
                     <#-- games list -->
                     <game-component
-                        v-for="game in prefs.gameProps"
+                        v-for="game in gameProps"
                         :key="game.name + '-' + game.createTime"
-                        :game-prop="gamePropMap[game.name]"
-                        :aux-prop="auxData[game.name]"
+                        :game-prop="state.gamePropMap[game.name]"
+                        :aux-prop="state.auxData[game.name]"
                         v-on:filter-streams="filterStreams(game.name)"
                         v-on:remove-game="removeGame(game.name)"
                     ></game-component>
@@ -91,8 +92,8 @@
                             v-for="stream in streams"
                             :key="stream.channelId"
                             v-bind:stream="stream"
-                            v-bind:game-prop-map="gamePropMap"
-                            v-bind:game-color-map="gameColorMap"
+                            v-bind:game-prop-map="state.gamePropMap"
+                            v-bind:game-color-map="state.gameColorMap"
                             v-on:filter-streams="filterStreams(stream.gameName)"
                         ></stream-component>
                     </div>

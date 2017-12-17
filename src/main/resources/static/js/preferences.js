@@ -2,75 +2,95 @@ var prefsKey = 'prefs.v0.1';
 
 var defaultGames = [ 'Dota 2', 'PLAYERUNKNOWN\'S BATTLEGROUNDS', 'Hearthstone' ];
 
-function createPrefs(games) {
-	// make sure games is sorted, but don't modify the arg
-	games = games.slice().sort();
-
-	let prefs = {
-		gameProps: []
-	};
-
-	games.forEach((game) => {
-		let prop = createGameProp(game);
-		prefs.gameProps.push(prop);
-	})
-
-	return prefs;
-}
-
-function createGameProp(game) {
-	var date = new Date();
-	return {
-		name: game,
-		display: true,
-		createTime: date.getTime()
+class Prefs {
+	constructor(gameProps) {
+		this.gameProps = gameProps;
 	}
-}
 
-function getPrefsDebugString(prefs) {
-	let ret = "";
+	static readPrefs() {
+	    if (!localStorage.getItem(prefsKey)) {
+	        let prefs = Prefs._createPrefs(defaultGames);
+	        Prefs.storePrefs(prefs);
+	    }
 
-	prefs.gameProps.forEach((game) => {
-        ret += "[name: " + game.name + ", disp: " + game.display + ", ct: " + game.createTime + "]\n";
-    });
+	    let prefsJson = localStorage.getItem(prefsKey);
+	    let prefs = JSON.parse(prefsJson);
 
-    return ret;
-}
+	    Prefs._sortGameProps(prefs);
 
-function readPrefs() {
-    if (!localStorage.getItem(prefsKey)) {
-        let prefs = createPrefs(defaultGames);
-        storePrefs(prefs);
-    }
+	    return new Prefs(prefs.gameProps);
+	}
 
-    let prefsJson = localStorage.getItem(prefsKey);
-    let prefs = JSON.parse(prefsJson);
+	static storePrefs(prefs) {
+		Prefs._sortGameProps(prefs);
+		let prefsJson = JSON.stringify(prefs);
+		localStorage.setItem(prefsKey, prefsJson);
+	}
 
-    sortGameProps(prefs);
+	addGame(gameName) {
+		let prop = Prefs._createGameProp(gameName);
+        this.gameProps.push(prop);
+	}
 
-    return prefs;
-}
+	removeGame(gameName) {
+		let idx = 0;
+        while (idx < this.gameProps.length) {
+            if (this.gameProps[idx].name == gameName) {
+                this.gameProps.splice(idx, 1);
+                return;
+            }
+            idx++;
+        }
+	}
 
-function storePrefs(prefs) {
-	sortGameProps(prefs);
-	let prefsJson = JSON.stringify(prefs);
-	localStorage.setItem(prefsKey, prefsJson);
-}
+	getDebugString() {
+		let ret = "";
 
-function compareGameName(a, b) {
-	return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
-}
+		this.gameProps.forEach((game) => {
+	        ret += "[name: " + game.name + ", disp: " + game.display + ", ct: " + game.createTime + "]\n";
+	    });
 
-function sortGameProps(prefs) {
-	let sorted = true;
-	for (let i=1; i < prefs.gameProps.length; i++) {
-		if (compareGameName(prefs.gameProps[i-1], prefs.gameProps[i]) > 0) {
-			sorted = false;
-			break;
+	    return ret;
+	}
+
+	static _createPrefs(games) {
+		// make sure games is sorted, but don't modify the arg
+		games = games.slice().sort();
+
+		let prefs = new Prefs();
+
+		games.forEach((game) => {
+			let prop = Prefs._createGameProp(game);
+			this.gameProps.push(prop);
+		})
+
+		return prefs;
+	}
+
+	static _createGameProp(game) {
+		var date = new Date();
+		return {
+			name: game,
+			display: true,
+			createTime: date.getTime()
 		}
 	}
 
-	if (!sorted) {
-		prefs.gameProps.sort(compareGameName);
+	static _compareGameName(a, b) {
+		return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
+	}
+
+	static _sortGameProps(prefs) {
+		let sorted = true;
+		for (let i=1; i < prefs.gameProps.length; i++) {
+			if (Prefs._compareGameName(prefs.gameProps[i-1], prefs.gameProps[i]) > 0) {
+				sorted = false;
+				break;
+			}
+		}
+
+		if (!sorted) {
+			prefs.gameProps.sort(Prefs._compareGameName);
+		}
 	}
 }

@@ -90,11 +90,10 @@ var gameComponent = {
 
 var app = new Vue({
     el: '#app',
-    data () {
+    data() {
         return {
-            clientId: clientId, // needs to be defined by whatever is including this js file
-            prefs: {},
-            auxData: {},
+            clientId: clientId, // must be defined by whatever is including this js file
+            state: state,
             streams: [],
             streamsLoaded: {},  // cache of successful /api/streams calls made, but doesn't contain the responses
             agSelect: "",       // add game autocomplete selected item
@@ -103,53 +102,16 @@ var app = new Vue({
             agLoading: false,
             drawer: true,
         }
-
     },
     computed: {
-        gamePropMap: function() {
-            let map = {};
-            this.prefs.gameProps.forEach((game) => {
-                map[game.name] = game;
-            });
-            return map;
-        },
-        gameColorMap: function() {
-            let colors = [
-                "#710c42", // 0 pink
-                "#4a148c", // 1 purple
-                "#1a237e", // 2 indigo
-                "#01579b", // 3 light blue
-                "#006064", // 4 cyan
-                "#004d40", // 5 teal
-                "#1b5e20", // 6 green
-                "#3c2e3d", // 7 cranberry
-                "#212121", // 8 grey
-                "#263238", // 9 blue grey
-            ]
-
-            let sortedGameProps = this.prefs.gameProps.slice().sort(function(a, b) {
-                if (a.createTime != b.createTime) {
-                    return a.createTime - b.createTime;
-                }
-                return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
-            });
-
-            let map = {};
-            let colorIdx = 0;
-            sortedGameProps.forEach((game) => {
-                map[game.name] = colors[colorIdx];
-                colorIdx = (colorIdx + 1) % colors.length;
-            });
-
-            return map;
+        gameProps: function() {
+            return state.prefs.gameProps;
         }
     },
     watch: {
-        prefs: {
+        'state.prefs': {
             handler(prefs, oldPrefs) {
-                //console.log("prefs:\n" + getPrefsDebugString(prefs));
-
-                storePrefs(this.prefs);
+                //console.log("prefs:\n" + prefs.getDebugString());
                 this.loadVisibleStreams();
             },
             deep: true
@@ -164,7 +126,7 @@ var app = new Vue({
     },
     methods: {
         loadVisibleStreams: function() {
-            this.prefs.gameProps.forEach((game) => {
+            this.gameProps.forEach((game) => {
                 if (game.display) {
                     this.loadStreams(game.name, 0, 25);
                 }
@@ -211,14 +173,14 @@ var app = new Vue({
             this.streams = mergedStreams;
         },
         showAllStreams: function() {
-            this.prefs.gameProps.forEach((game) => {
+            this.gameProps.forEach((game) => {
                 game.display = true;
             })
         },
         filterStreams: function(gameName) {
             this.closeMenu(gameName);
 
-            this.prefs.gameProps.forEach((game) => {
+            this.gameProps.forEach((game) => {
                 if (game.name == gameName) {
                     game.display = true;
                 } else {
@@ -227,13 +189,10 @@ var app = new Vue({
             })
         },
         addGame: function() {
-            if (this.agSelect && !this.gamePropMap.hasOwnProperty(this.agSelect)) {
+            if (this.agSelect && !this.state.gamePropMap.hasOwnProperty(this.agSelect)) {
                 this.agItems.some((game) => {
                     if (this.agSelect == game) {
-                        this.initAuxProp(game);
-
-                        let prop = createGameProp(game);
-                        this.prefs.gameProps.push(prop);
+                        this.state.addGame(game);
                         // don't need to load streams here, prefs watcher takes care of it
                         return true;
                     }
@@ -241,17 +200,8 @@ var app = new Vue({
                 });
             }
         },
-        removeGame: function(game) {
-            this.closeMenu(game);
-
-            let idx = 0;
-            while (idx < this.prefs.gameProps.length) {
-                if (this.prefs.gameProps[idx].name == game) {
-                    this.prefs.gameProps.splice(idx, 1);
-                    return;
-                }
-                idx++;
-            }
+        removeGame: function(gameName) {
+            this.state.removeGame(gameName);
         },
         queryGames: function(gameName) {
             if (!gameName) {
@@ -300,25 +250,12 @@ var app = new Vue({
 
             this.agLoading = false;
         },
-        closeMenu: function(game) {
-            this.auxData[game].menu = false;
+        closeMenu: function(gameName) {
+            this.state.closeMenu(gameName);
         },
-        initAuxData: function(prefs) {
-            prefs.gameProps.forEach((game) => {
-                this.initAuxProp(game.name)
-            });
-        },
-        initAuxProp: function(gameName) {
-            this.auxData[gameName] = {
-                menu: false
-            };
-        }
+
     },
     created: function() {
-        let prefs = readPrefs();
-        // app.auxData needs to be updated before app.prefs is updated
-        this.initAuxData(prefs);
-        this.prefs = prefs;
         this.loadVisibleStreams();
     }
 });
