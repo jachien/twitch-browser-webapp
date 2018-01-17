@@ -57,14 +57,13 @@ class Prefs {
 		// make sure games is sorted, but don't modify the arg
 		games = games.slice().sort();
 
-		let prefs = new Prefs();
-
+		let gameProps = [];
 		games.forEach((game) => {
 			let prop = Prefs._createGameProp(game);
-			this.gameProps.push(prop);
+			gameProps.push(prop);
 		})
 
-		return prefs;
+		return new Prefs(gameProps);
 	}
 
 	static _createGameProp(game) {
